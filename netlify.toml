@@ -1,0 +1,23 @@
+# Functions directory must be declared explicitly, otherwise drag-and-drop
+# deploys publish the static files but skip netlify/functions entirely.
+# Note: deliberately NO [build] publish setting — that breaks drop deploys (404).
+[functions]
+  directory = "netlify/functions"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(self), microphone=(), camera=()"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
