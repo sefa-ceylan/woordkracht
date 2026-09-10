@@ -19,7 +19,7 @@
 })();
 </script>
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"></noscript>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.anthropic.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
 <title>Nederlands Woordenschat</title>
 
 <!-- PWA: lets users "Add to Home Screen" for a standalone, app-like experience -->
@@ -4344,6 +4344,7 @@ function setLanguage(lang){
   if(oppositesScreen.classList.contains('active')) startOpposites();
   if(grammarScreen.classList.contains('active')){
     if(currentGrammarTopic && document.getElementById('grammarOptions')){
+      // mid-quiz: just redraw the current question in the new language
       renderGrammarQuestion();
     } else if(currentGrammarTopic && document.querySelector('.grammar-explain-card')){
       openGrammarTopic(currentGrammarTopic.id);
@@ -4522,6 +4523,7 @@ function showUsageCelebration(milestone){
   `;
   document.body.appendChild(overlay);
 
+  // lightweight confetti burst — plain CSS-animated divs, removed once done
   const colors = ['#e8622c','#e8b64c','#4a8494','#4caf72','#faf3e6'];
   for(let i=0;i<28;i++){
     const p = document.createElement('div');
@@ -4610,7 +4612,7 @@ setTimeout(maybeShowDailyReminder, 4000); // and shortly after opening
    NOTE: this is an honor-system unlock for a fast MVP — anyone could add
    ?premium=success to the URL by hand. For real protection later, verify the
    Stripe session server-side (a tiny serverless function) before unlocking. */
-// Backend (netlify/functions/dictionary.js) is live and working, but the feature
+// Backend (api/dictionary.js) is live and working, but the feature
 // stays in "coming soon" mode until payment is set up — that way nobody clicks an
 // upgrade button that goes nowhere. Flip to true to switch it on for everyone.
 const AI_DICTIONARY_ENABLED = false;
@@ -4825,7 +4827,7 @@ function showGalleryPhoto(index){
 function startGallery(){
   showGalleryPhoto(galleryIndex);
   setInterval(()=>{
-    if(document.hidden) return;
+    if(document.hidden) return; // tab not visible — don't fetch/decode a new photo for nothing
     galleryIndex = (galleryIndex + 1) % GALLERY_PHOTOS.length;
     showGalleryPhoto(galleryIndex);
   }, 15000);
@@ -4939,9 +4941,14 @@ function speak(text, lang, btnEl){
     utter.onend = ()=> btnEl.classList.remove('speaking');
     utter.onerror = ()=>{
       btnEl.classList.remove('speaking');
+      // no matching voice at all on this device/browser for this language —
+      // most common for Arabic, since far fewer systems ship an Arabic voice
+      // than a Dutch/English/Turkish one. Let the user know why nothing played.
       if(!voice) showNoVoiceHint(btnEl, lang);
     };
   }
+  // if we already know there's no voice for this language, don't even try —
+  // some browsers stay silent, others throw; either way, tell the user now.
   if(!voice && lang.split('-')[0] !== 'nl' && lang.split('-')[0] !== 'en'){
     if(btnEl) showNoVoiceHint(btnEl, lang);
   }
@@ -5615,6 +5622,8 @@ function initDeferred(){
   loadWeather();
   updateBackgroundTheme();
   document.getElementById('reminderToggleBtn').addEventListener('click', toggleReminders);
+  // PWA: register the service worker so "Add to Home Screen" installability
+  // criteria are met and the vocabulary works offline once cached
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{ /* non-critical, ignore failures */ });
   }
@@ -5733,12 +5742,12 @@ document.getElementById('findLibraryBtn').addEventListener('click', ()=>{
 });
 
 /* ---------- weather widget ----------
-   Uses our own backend (netlify/functions/weather.js) which proxies Buienradar's
+   Uses our own backend (api/weather.js) which proxies Buienradar's
    free feed server-side (their API has no CORS headers for direct browser use).
    Falls back to De Bilt (KNMI's reference station) if location isn't shared. */
 function loadWeather(){
   function fetchWeather(lat, lon){
-    fetch(`/.netlify/functions/weather?lat=${lat}&lon=${lon}`)
+    fetch(`/api/weather?lat=${lat}&lon=${lon}`)
       .then(r => r.ok ? r.json() : Promise.reject(new Error('bad response')))
       .then(renderWeather)
       .catch(()=>{ /* fails silently — the widget just stays hidden */ });
@@ -5990,25 +5999,19 @@ async function lookupFullDictionary(query){
   const btn = document.getElementById('fullDictBtn');
   if(btn){ btn.disabled = true; btn.textContent = '⏳ ' + t('lookingUp'); }
 
-  const prompt = `You are a Dutch-English dictionary. The user searched for: "${query}".
-This could be a Dutch word/phrase (give its English meaning) or an English word/phrase (give its Dutch equivalent).
-Pick the single most likely, most common match. Respond with ONLY raw JSON, no markdown, no code fences, no explanation:
-{"nl":"the Dutch word/phrase, correctly spelled","en":"concise English meaning","tr":"concise Turkish meaning","ar":"concise Arabic meaning","ipa":"a simple bracket pronunciation guide like [voor-BEELT], approximating Dutch sounds for an English speaker","cat":"noun, verb, adjective, adverb, or phrase","level":"a rough CEFR guess: A1, A2, B1, B2, C1 or C2","example":"one short natural Dutch example sentence using the word"}`;
-
   try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    // calls our own backend (api/dictionary.js), which holds the
+    // real API key server-side and forwards the request to Anthropic — the
+    // browser never sees or sends the key.
+    const response = await fetch("/api/dictionary", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-5",
-        max_tokens: 400,
-        messages: [{ role: "user", content: prompt }]
-      })
+      body: JSON.stringify({ query })
     });
-    const data = await response.json();
-    const text = (data.content || []).map(b => b.text || "").join("").trim();
-    const clean = text.replace(/```json|```/g, "").trim();
-    const wRaw = JSON.parse(clean);
+    if(!response.ok){
+      throw new Error('Backend returned ' + response.status);
+    }
+    const wRaw = await response.json();
     // sanitize every field from the external API before it ever touches innerHTML
     const w = {
       nl: escapeHtml(wRaw.nl),
