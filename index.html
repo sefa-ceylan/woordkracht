@@ -19,7 +19,7 @@
 })();
 </script>
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap"></noscript>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.anthropic.com;">
 <title>Nederlands Woordenschat</title>
 
 <!-- PWA: lets users "Add to Home Screen" for a standalone, app-like experience -->
@@ -2391,6 +2391,159 @@ const GRAMMAR_TOPICS = [
     {q:"Het regent, dus ik ___ een paraplu mee.", options:["neem","ik neem","nemen"], correct:0},
     {q:"Kies de juiste zin:", options:["Hij lacht, want hij is blij.","Hij lacht, want is hij blij.","Hij lacht, want blij hij is."], correct:0}
   ]
+},
+{
+  id:"irregular-past", level:"B1",
+  title:{en:"Simple Past: Irregular Verbs", nl:"Verleden tijd: onregelmatig", tr:"Geçmiş Zaman: Düzensiz Fiiller", ar:"الماضي البسيط: الأفعال الشاذة"},
+  explanation:{
+    en:"Many common Dutch verbs don't follow the -te/-de pattern — their stem vowel changes instead. These must be memorized individually: gaan → ging, zijn → was, hebben → had, komen → kwam, zien → zag. There's no shortcut; frequent exposure is the best way to learn them.",
+    nl:"Veel veelgebruikte Nederlandse werkwoorden volgen niet het -te/-de patroon — de klinker in de stam verandert juist. Deze moet je apart uit je hoofd leren: gaan → ging, zijn → was, hebben → had, komen → kwam, zien → zag. Er is geen kortere weg; veel blootstelling is de beste manier om ze te leren.",
+    tr:"Birçok sık kullanılan Hollandaca fiil -te/-de kalıbını izlemez — bunun yerine kökteki ünlü değişir. Bunlar tek tek ezberlenmelidir: gaan → ging, zijn → was, hebben → had, komen → kwam, zien → zag. Kestirme bir yolu yoktur; sık maruz kalmak en iyi öğrenme yoludur.",
+    ar:"لا تتبع العديد من الأفعال الهولندية الشائعة نمط -te/-de — بل يتغير حرف العلة في الجذر بدلاً من ذلك. يجب حفظ هذه الأفعال فرداً فرداً: gaan ← ging، zijn ← was، hebben ← had، komen ← kwam، zien ← zag. لا يوجد طريق مختصر؛ التعرض المتكرر هو أفضل طريقة لتعلمها."
+  },
+  questions:[
+    {q:"gaan → ik ___", options:["ging","gaande","gaat"], correct:0},
+    {q:"zijn → hij ___", options:["is","was","zijnde"], correct:1},
+    {q:"hebben → wij ___", options:["had","hadden","heeft"], correct:1},
+    {q:"komen → zij (enkelvoud) ___", options:["kwam","kwamen","komt"], correct:0},
+    {q:"zien → jij ___ dat?", options:["zag","ziet","zagen"], correct:0}
+  ]
+},
+{
+  id:"reflexive-verbs", level:"B1",
+  title:{en:"Reflexive Verbs", nl:"Wederkerende werkwoorden", tr:"Dönüşlü Fiiller", ar:"الأفعال الانعكاسية"},
+  explanation:{
+    en:"Reflexive verbs use a reflexive pronoun (myself, yourself, etc.) that matches the subject: ik was me, jij wast je, hij wast zich, wij wassen ons, jullie wassen je, zij wassen zich. Common reflexive verbs include zich wassen (to wash oneself), zich voelen (to feel), and zich herinneren (to remember).",
+    nl:"Wederkerende werkwoorden gebruiken een wederkerend voornaamwoord (mezelf, jezelf, etc.) dat overeenkomt met het onderwerp: ik was me, jij wast je, hij wast zich, wij wassen ons, jullie wassen je, zij wassen zich. Veelvoorkomende wederkerende werkwoorden zijn zich wassen, zich voelen en zich herinneren.",
+    tr:"Dönüşlü fiiller, özneyle uyumlu bir dönüşlü zamir (kendimi, kendini vb.) kullanır: ik was me, jij wast je, hij wast zich, wij wassen ons, jullie wassen je, zij wassen zich. Yaygın dönüşlü fiiller arasında zich wassen (yıkanmak), zich voelen (hissetmek) ve zich herinneren (hatırlamak) bulunur.",
+    ar:"تستخدم الأفعال الانعكاسية ضميراً انعكاسياً (نفسي، نفسك، إلخ) يتوافق مع الفاعل: ik was me، jij wast je، hij wast zich، wij wassen ons، jullie wassen je، zij wassen zich. من الأفعال الانعكاسية الشائعة zich wassen (يغتسل)، zich voelen (يشعر)، وzich herinneren (يتذكر)."
+  },
+  questions:[
+    {q:"Ik was ___.", options:["me","je","zich"], correct:0},
+    {q:"Jij voelt ___ niet lekker.", options:["me","je","zich"], correct:1},
+    {q:"Zij (enkelvoud) herinnert ___ die dag nog goed.", options:["me","je","zich"], correct:2},
+    {q:"Wij wassen ___ elke ochtend.", options:["ons","jullie","zich"], correct:0},
+    {q:"Jullie vergissen ___ vaak.", options:["ons","je","zich"], correct:1}
+  ]
+},
+{
+  id:"relative-clauses", level:"B1",
+  title:{en:"Relative Clauses: die & dat", nl:"Betrekkelijke bijzinnen: die & dat", tr:"İlgi Cümlecikleri: die & dat", ar:"الجمل الموصولة: die و dat"},
+  explanation:{
+    en:"Use 'die' to refer back to de-words (and all plurals), and 'dat' to refer back to het-words. Example: 'de man die daar staat' (the man who is standing there), 'het huis dat ik koop' (the house that I'm buying).",
+    nl:"Gebruik 'die' om terug te verwijzen naar de-woorden (en alle meervouden), en 'dat' voor het-woorden. Bijvoorbeeld: 'de man die daar staat', 'het huis dat ik koop'.",
+    tr:"'de' kelimelerine (ve tüm çoğullara) atıfta bulunmak için 'die', 'het' kelimelerine atıfta bulunmak için 'dat' kullanılır. Örnek: 'de man die daar staat' (orada duran adam), 'het huis dat ik koop' (satın aldığım ev).",
+    ar:"استخدم 'die' للإشارة إلى كلمات 'de' (وكل صيغ الجمع)، و'dat' لكلمات 'het'. مثال: 'de man die daar staat' (الرجل الذي يقف هناك)، 'het huis dat ik koop' (البيت الذي أشتريه)."
+  },
+  questions:[
+    {q:"de vrouw ___ hier woont", options:["die","dat"], correct:0},
+    {q:"het boek ___ ik lees", options:["die","dat"], correct:1},
+    {q:"de kinderen ___ buiten spelen", options:["die","dat"], correct:0},
+    {q:"het huis ___ te koop staat", options:["die","dat"], correct:1},
+    {q:"de auto ___ voor de deur staat", options:["die","dat"], correct:0}
+  ]
+},
+{
+  id:"comparative-superlative", level:"B1",
+  title:{en:"Comparative & Superlative", nl:"Vergrotende en overtreffende trap", tr:"Karşılaştırma ve Üstünlük Dereceleri", ar:"صيغ المقارنة والتفضيل"},
+  explanation:{
+    en:"Add '-er' for the comparative (groot → groter) and '-st' for the superlative (groot → grootst), usually preceded by 'de/het'. Adjectives ending in -r add '-der' instead (lekker → lekkerder). A few are irregular: goed → beter → best.",
+    nl:"Voeg '-er' toe voor de vergrotende trap (groot → groter) en '-st' voor de overtreffende trap (groot → grootst), meestal voorafgegaan door 'de/het'. Bijvoeglijke naamwoorden op -r krijgen '-der' (lekker → lekkerder). Enkele zijn onregelmatig: goed → beter → best.",
+    tr:"Karşılaştırma derecesi için '-er' (groot → groter), üstünlük derecesi için genelde 'de/het' ile birlikte '-st' eklenir (groot → grootst). -r ile biten sıfatlar '-der' alır (lekker → lekkerder). Birkaçı düzensizdir: goed → beter → best.",
+    ar:"أضف '-er' لصيغة المقارنة (groot ← groter) و'-st' لصيغة التفضيل (groot ← grootst)، وعادة ما تسبقها 'de/het'. الصفات المنتهية بـ -r تأخذ '-der' (lekker ← lekkerder). بعضها شاذ: goed ← beter ← best."
+  },
+  questions:[
+    {q:"groot (vergelijking) → ?", options:["groter","grootst","grootder"], correct:0},
+    {q:"lekker (vergelijking) → ?", options:["lekkerer","lekkerder","lekkerst"], correct:1},
+    {q:"goed (vergelijking, onregelmatig) → ?", options:["goeder","beter","goedst"], correct:1},
+    {q:"Dit is de ___ dag van mijn leven. (goed, overtreffend)", options:["beter","beste","goedste"], correct:1},
+    {q:"klein (overtreffend) → ?", options:["kleinst","kleiner","kleinder"], correct:0}
+  ]
+},
+{
+  id:"fixed-prepositions", level:"B1",
+  title:{en:"Verbs with Fixed Prepositions", nl:"Vaste voorzetsels bij werkwoorden", tr:"Sabit Edatlarla Kullanılan Fiiller", ar:"الأفعال مع حروف الجر الثابتة"},
+  explanation:{
+    en:"Many Dutch verbs are always paired with a specific preposition, which doesn't always match the English equivalent: wachten op (to wait for), denken aan (to think of/about), houden van (to love), zich verheugen op (to look forward to). These combinations must be learned together, word for word.",
+    nl:"Veel Nederlandse werkwoorden gaan altijd samen met een vast voorzetsel, dat niet altijd overeenkomt met het Engels: wachten op, denken aan, houden van, zich verheugen op. Deze combinaties moet je samen leren, woord voor woord.",
+    tr:"Birçok Hollandaca fiil her zaman belirli bir edatla birlikte kullanılır, bu her zaman İngilizce karşılığıyla eşleşmez: wachten op (beklemek), denken aan (düşünmek), houden van (sevmek), zich verheugen op (dört gözle beklemek). Bu kombinasyonlar birlikte, kelimesi kelimesine öğrenilmelidir.",
+    ar:"تُقرن العديد من الأفعال الهولندية دائماً بحرف جر محدد، لا يتطابق دائماً مع المكافئ الإنجليزي: wachten op (ينتظر)، denken aan (يفكر في)، houden van (يحب)، zich verheugen op (يتطلع إلى). يجب تعلم هذه التركيبات معاً، كلمة بكلمة."
+  },
+  questions:[
+    {q:"Ik wacht ___ de bus.", options:["op","aan","van"], correct:0},
+    {q:"Ik denk vaak ___ jou.", options:["op","aan","in"], correct:1},
+    {q:"Ik houd ___ chocolade.", options:["van","aan","op"], correct:0},
+    {q:"Ze verheugt zich ___ de vakantie.", options:["aan","op","van"], correct:1},
+    {q:"Hij is verliefd ___ haar.", options:["op","in","van"], correct:0}
+  ]
+},
+{
+  id:"passive-voice", level:"B2",
+  title:{en:"Passive Voice", nl:"Lijdende vorm (passief)", tr:"Edilgen Çatı (Pasif)", ar:"صيغة المبني للمجهول"},
+  explanation:{
+    en:"The passive voice is formed with 'worden' (present/past) or 'zijn' (present perfect) + past participle, shifting focus to the action rather than who performs it: 'Het huis wordt gebouwd' (The house is being built), 'Het huis is gebouwd' (The house has been built).",
+    nl:"De lijdende vorm wordt gemaakt met 'worden' (tegenwoordige/verleden tijd) of 'zijn' (voltooid tegenwoordige tijd) + voltooid deelwoord, waarbij de nadruk verschuift naar de actie in plaats van wie hem uitvoert: 'Het huis wordt gebouwd', 'Het huis is gebouwd'.",
+    tr:"Edilgen çatı, 'worden' (şimdiki/geçmiş zaman) veya 'zijn' (yakın geçmiş zaman) + geçmiş zaman ortacı ile oluşturulur, odak kimin yaptığından çok eyleme kayar: 'Het huis wordt gebouwd' (Ev inşa ediliyor), 'Het huis is gebouwd' (Ev inşa edildi).",
+    ar:"يتكون المبني للمجهول من 'worden' (المضارع/الماضي) أو 'zijn' (الماضي التام) + اسم المفعول، مع تحويل التركيز إلى الفعل بدلاً من من يقوم به: 'Het huis wordt gebouwd' (يتم بناء المنزل)، 'Het huis is gebouwd' (تم بناء المنزل)."
+  },
+  questions:[
+    {q:"Het huis ___ gebouwd. (nu, bezig)", options:["wordt","is","werd"], correct:0},
+    {q:"De brief ___ gisteren geschreven.", options:["wordt","werd","is"], correct:1},
+    {q:"Het probleem is al ___.", options:["opgelost","oplossen","oplost"], correct:0},
+    {q:"De auto's ___ hier gemaakt.", options:["worden","wordt","zijn"], correct:0},
+    {q:"De taart is door haar ___.", options:["bakken","gebakken","bakte"], correct:1}
+  ]
+},
+{
+  id:"conditional-sentences", level:"B2",
+  title:{en:"Conditional Sentences", nl:"Voorwaardelijke zinnen", tr:"Koşul Cümleleri", ar:"الجمل الشرطية"},
+  explanation:{
+    en:"Real conditions use 'als' + present tense: 'Als het regent, blijf ik thuis' (If it rains, I'll stay home). Hypothetical/unreal conditions use 'zou(den)' + infinitive, often with the imperfect verb form: 'Als ik rijk was, zou ik reizen' (If I were rich, I would travel).",
+    nl:"Reële voorwaarden gebruiken 'als' + tegenwoordige tijd: 'Als het regent, blijf ik thuis'. Hypothetische/onwerkelijke voorwaarden gebruiken 'zou(den)' + infinitief, vaak met de onvoltooid verleden tijd: 'Als ik rijk was, zou ik reizen'.",
+    tr:"Gerçek koşullar 'als' + şimdiki zaman kullanır: 'Als het regent, blijf ik thuis' (Yağmur yağarsa, evde kalırım). Varsayımsal/gerçek olmayan koşullar 'zou(den)' + mastar kullanır, genelde geçmiş zaman formuyla: 'Als ik rijk was, zou ik reizen' (Zengin olsaydım, seyahat ederdim).",
+    ar:"الشروط الحقيقية تستخدم 'als' + المضارع: 'Als het regent, blijf ik thuis' (إذا أمطرت، سأبقى في المنزل). الشروط الافتراضية تستخدم 'zou(den)' + المصدر، غالباً مع صيغة الماضي: 'Als ik rijk was, zou ik reizen' (لو كنت غنياً، لسافرت)."
+  },
+  questions:[
+    {q:"Als het regent, ___ ik thuis.", options:["blijf","zou blijven","bleef"], correct:0},
+    {q:"Als ik jou was, ___ ik dat niet doen.", options:["doe","zou","deed"], correct:1},
+    {q:"Als ik meer tijd had, ___ ik Nederlands studeren.", options:["zal","zou","ga"], correct:1},
+    {q:"Als je hard werkt, ___ je slagen.", options:["zal","zult","zou"], correct:1},
+    {q:"Als ik de loterij zou winnen, ___ ik een huis kopen.", options:["zal","zou","ga"], correct:1}
+  ]
+},
+{
+  id:"om-te-infinitive", level:"B2",
+  title:{en:"Om...te + Infinitive", nl:"Om...te + infinitief", tr:"Om...te + Mastar Yapısı", ar:"تركيب om...te + المصدر"},
+  explanation:{
+    en:"Use 'om...te' + infinitive to express purpose or intention — 'in order to': 'Ik leer Nederlands om beter te integreren' (I'm learning Dutch in order to integrate better). Drop 'om' when it's just a direct complement, e.g. after 'proberen', 'beginnen'.",
+    nl:"Gebruik 'om...te' + infinitief om een doel of intentie uit te drukken: 'Ik leer Nederlands om beter te integreren'. Laat 'om' weg wanneer het een direct complement is, bijvoorbeeld na 'proberen', 'beginnen'.",
+    tr:"Amaç veya niyet ifade etmek için 'om...te' + mastar kullanılır — 'için': 'Ik leer Nederlands om beter te integreren' (Daha iyi entegre olmak için Hollandaca öğreniyorum). Doğrudan tamlayıcıysa 'om' düşürülür, örneğin 'proberen', 'beginnen'den sonra.",
+    ar:"استخدم 'om...te' + المصدر للتعبير عن الغرض أو النية — 'لكي': 'Ik leer Nederlands om beter te integreren' (أتعلم الهولندية لكي أندمج بشكل أفضل). تُحذف 'om' عندما تكون مكملاً مباشراً، مثلاً بعد 'proberen'، 'beginnen'."
+  },
+  questions:[
+    {q:"Ik bel je ___ het adres door te geven.", options:["om","voor","aan"], correct:0},
+    {q:"Ze spaart geld ___ een huis te kopen.", options:["om","voor","met"], correct:0},
+    {q:"Hij probeert vroeg ___.", options:["op te staan","om op te staan","opstaan"], correct:0},
+    {q:"We gaan naar de markt ___ groente te kopen.", options:["om","aan","in"], correct:0},
+    {q:"Ik heb geen tijd ___ dat te doen.", options:["om","voor","aan"], correct:0}
+  ]
+},
+{
+  id:"indirect-speech", level:"B2",
+  title:{en:"Indirect Speech", nl:"Indirecte rede", tr:"Dolaylı Anlatım", ar:"الكلام غير المباشر"},
+  explanation:{
+    en:"When reporting what someone said, use 'dat' and shift the verb tense back one step: present tense becomes simple past. 'Hij zei: \"Ik ben moe\"' becomes 'Hij zei dat hij moe was.'",
+    nl:"Bij het weergeven van wat iemand zei, gebruik je 'dat' en verschuif je de werkwoordstijd één stap terug: tegenwoordige tijd wordt verleden tijd. 'Hij zei: \"Ik ben moe\"' wordt 'Hij zei dat hij moe was.'",
+    tr:"Birinin söylediğini aktarırken 'dat' kullanılır ve fiil zamanı bir adım geriye kaydırılır: şimdiki zaman geçmiş zamana döner. 'Hij zei: \"Ik ben moe\"' cümlesi 'Hij zei dat hij moe was.' olur.",
+    ar:"عند نقل ما قاله شخص ما، استخدم 'dat' وحرّك زمن الفعل خطوة للوراء: يتحول المضارع إلى الماضي. 'Hij zei: \"Ik ben moe\"' تصبح 'Hij zei dat hij moe was.'"
+  },
+  questions:[
+    {q:"Hij zei: \"Ik ben ziek.\" → Hij zei dat hij ziek ___.", options:["is","was","zal zijn"], correct:1},
+    {q:"Zij zei: \"Ik werk hard.\" → Zij zei dat ze hard ___.", options:["werkt","werkte","gewerkt"], correct:1},
+    {q:"Hij zei: \"Ik wil dat boek lezen.\" → Hij zei dat hij dat boek ___ lezen.", options:["wil","wilde","zou"], correct:1},
+    {q:"Ze zei: \"Ik kom morgen.\" → Ze zei dat ze morgen ___.", options:["komt","kwam","is gekomen"], correct:1},
+    {q:"Hij zei: \"Ik heb geen geld.\" → Hij zei dat hij geen geld ___.", options:["heeft","had","zou hebben"], correct:1}
+  ]
 }
 ];
 
@@ -4191,7 +4344,6 @@ function setLanguage(lang){
   if(oppositesScreen.classList.contains('active')) startOpposites();
   if(grammarScreen.classList.contains('active')){
     if(currentGrammarTopic && document.getElementById('grammarOptions')){
-      // mid-quiz: just redraw the current question in the new language
       renderGrammarQuestion();
     } else if(currentGrammarTopic && document.querySelector('.grammar-explain-card')){
       openGrammarTopic(currentGrammarTopic.id);
@@ -4370,7 +4522,6 @@ function showUsageCelebration(milestone){
   `;
   document.body.appendChild(overlay);
 
-  // lightweight confetti burst — plain CSS-animated divs, removed once done
   const colors = ['#e8622c','#e8b64c','#4a8494','#4caf72','#faf3e6'];
   for(let i=0;i<28;i++){
     const p = document.createElement('div');
@@ -4674,7 +4825,7 @@ function showGalleryPhoto(index){
 function startGallery(){
   showGalleryPhoto(galleryIndex);
   setInterval(()=>{
-    if(document.hidden) return; // tab not visible — don't fetch/decode a new photo for nothing
+    if(document.hidden) return;
     galleryIndex = (galleryIndex + 1) % GALLERY_PHOTOS.length;
     showGalleryPhoto(galleryIndex);
   }, 15000);
@@ -4788,14 +4939,9 @@ function speak(text, lang, btnEl){
     utter.onend = ()=> btnEl.classList.remove('speaking');
     utter.onerror = ()=>{
       btnEl.classList.remove('speaking');
-      // no matching voice at all on this device/browser for this language —
-      // most common for Arabic, since far fewer systems ship an Arabic voice
-      // than a Dutch/English/Turkish one. Let the user know why nothing played.
       if(!voice) showNoVoiceHint(btnEl, lang);
     };
   }
-  // if we already know there's no voice for this language, don't even try —
-  // some browsers stay silent, others throw; either way, tell the user now.
   if(!voice && lang.split('-')[0] !== 'nl' && lang.split('-')[0] !== 'en'){
     if(btnEl) showNoVoiceHint(btnEl, lang);
   }
@@ -5469,8 +5615,6 @@ function initDeferred(){
   loadWeather();
   updateBackgroundTheme();
   document.getElementById('reminderToggleBtn').addEventListener('click', toggleReminders);
-  // PWA: register the service worker so "Add to Home Screen" installability
-  // criteria are met and the vocabulary works offline once cached
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(()=>{ /* non-critical, ignore failures */ });
   }
@@ -5846,19 +5990,25 @@ async function lookupFullDictionary(query){
   const btn = document.getElementById('fullDictBtn');
   if(btn){ btn.disabled = true; btn.textContent = '⏳ ' + t('lookingUp'); }
 
+  const prompt = `You are a Dutch-English dictionary. The user searched for: "${query}".
+This could be a Dutch word/phrase (give its English meaning) or an English word/phrase (give its Dutch equivalent).
+Pick the single most likely, most common match. Respond with ONLY raw JSON, no markdown, no code fences, no explanation:
+{"nl":"the Dutch word/phrase, correctly spelled","en":"concise English meaning","tr":"concise Turkish meaning","ar":"concise Arabic meaning","ipa":"a simple bracket pronunciation guide like [voor-BEELT], approximating Dutch sounds for an English speaker","cat":"noun, verb, adjective, adverb, or phrase","level":"a rough CEFR guess: A1, A2, B1, B2, C1 or C2","example":"one short natural Dutch example sentence using the word"}`;
+
   try{
-    // calls our own backend (netlify/functions/dictionary.js), which holds the
-    // real API key server-side and forwards the request to Anthropic — the
-    // browser never sees or sends the key.
-    const response = await fetch("/.netlify/functions/dictionary", {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({
+        model: "claude-sonnet-5",
+        max_tokens: 400,
+        messages: [{ role: "user", content: prompt }]
+      })
     });
-    if(!response.ok){
-      throw new Error('Backend returned ' + response.status);
-    }
-    const wRaw = await response.json();
+    const data = await response.json();
+    const text = (data.content || []).map(b => b.text || "").join("").trim();
+    const clean = text.replace(/```json|```/g, "").trim();
+    const wRaw = JSON.parse(clean);
     // sanitize every field from the external API before it ever touches innerHTML
     const w = {
       nl: escapeHtml(wRaw.nl),
