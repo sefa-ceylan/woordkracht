@@ -657,6 +657,17 @@ body.light-mode .mode-tab:hover:not(.active){
 }
 .grammar-topic-card:hover{ border-color: var(--teal); background: rgba(74,132,148,0.1); transform: translateX(2px); }
 .grammar-topic-card:active{ transform: scale(0.98); }
+.grammar-mixed-card{
+  background: linear-gradient(135deg, rgba(232,182,76,0.16), rgba(232,98,44,0.12));
+  border-color: var(--gold);
+  margin-bottom:16px;
+}
+.grammar-mixed-card:hover{ border-color: var(--gold); background: linear-gradient(135deg, rgba(232,182,76,0.24), rgba(232,98,44,0.18)); }
+.grammar-mixed-card .grammar-topic-arrow{ color: var(--gold); }
+body.light-mode .grammar-mixed-card{
+  background: linear-gradient(135deg, rgba(232,182,76,0.22), rgba(232,98,44,0.14));
+  border-color: #c8962a;
+}
 .grammar-topic-arrow{ color: var(--teal); font-size:18px; }
 .grammar-back-btn{
   font-family:'Inter', system-ui, sans-serif;
@@ -2304,7 +2315,10 @@ const GRAMMAR_TOPICS = [
     {q:"Kies de juiste zin:", options:["Morgen ik werk niet.","Morgen werk ik niet.","Ik morgen werk niet."], correct:1},
     {q:"Kies de juiste zin:", options:["Vanavond kook ik pasta.","Vanavond ik kook pasta.","Ik vanavond kook pasta."], correct:0},
     {q:"In het weekend ___ we vaak naar het park.", options:["gaan we","we gaan","gaan"], correct:0},
-    {q:"Kies de juiste zin:", options:["Daarom hij is blij.","Daarom is hij blij.","Hij daarom is blij."], correct:1}
+    {q:"Kies de juiste zin:", options:["Daarom hij is blij.","Daarom is hij blij.","Hij daarom is blij."], correct:1},
+    {q:"Kies de juiste zin:", options:["Gelukkig hebben we het gehaald.","Gelukkig we hebben het gehaald.","We gelukkig hebben het gehaald."], correct:0},
+    {q:"Elke dag ___ hij twee uur.", options:["studeert","hij studeert","studeren"], correct:0},
+    {q:"Kies de juiste zin:", options:["Soms ik ga te laat naar bed.","Soms ga ik te laat naar bed.","Ik soms ga te laat naar bed."], correct:1}
   ]
 },
 {
@@ -2321,7 +2335,10 @@ const GRAMMAR_TOPICS = [
     {q:"aankomen: De trein ___ om 9 uur ___.", options:["komt / aan","aankomt / —","komt aan / —"], correct:0},
     {q:"Kies de juiste zin (opbellen):", options:["Ik op bel mijn moeder.","Ik bel mijn moeder op.","Ik belop mijn moeder."], correct:1},
     {q:"Kies de juiste zin (afwassen):", options:["Ik was de borden af.","Ik afwas de borden.","Ik was af de borden."], correct:0},
-    {q:"Ik wil morgen vroeg ___. (opstaan, met modaal werkwoord)", options:["op staan","opstaan","staan op"], correct:1}
+    {q:"Ik wil morgen vroeg ___. (opstaan, met modaal werkwoord)", options:["op staan","opstaan","staan op"], correct:1},
+    {q:"meenemen: Neem je een paraplu ___?", options:["mee","meenee","mee te"], correct:0},
+    {q:"Kies de juiste zin (uitnodigen):", options:["Ik nodig hem uit voor het feest.","Ik uitnodig hem voor het feest.","Ik nodig uit hem voor het feest."], correct:0},
+    {q:"doorgaan: Ze wil morgen ___. (met modaal werkwoord, doorgaan)", options:["door gaan","doorgaan","gaan door"], correct:1}
   ]
 },
 {
@@ -2338,7 +2355,10 @@ const GRAMMAR_TOPICS = [
     {q:"Kies de juiste zin:", options:["Ik kan Nederlands spreek.","Ik kan spreken Nederlands.","Ik kan Nederlands spreken."], correct:2},
     {q:"___ ik het raam openen? (may I)", options:["Mag","Moet","Kan"], correct:0},
     {q:"Zij ___ graag naar Spanje reizen. (wants to)", options:["wil","wilt","willen"], correct:0},
-    {q:"Kies de juiste zin:", options:["Wij moeten nu vertrekken.","Wij moeten vertrekken nu.","Wij nu moeten vertrekken."], correct:0}
+    {q:"Kies de juiste zin:", options:["Wij moeten nu vertrekken.","Wij moeten vertrekken nu.","Wij nu moeten vertrekken."], correct:0},
+    {q:"Je ___ hier niet roken. (mag niet / not allowed to)", options:["mag","moet","kan"], correct:0},
+    {q:"___ jullie morgen komen? (can you)", options:["Kunnen","Kunt","Kan"], correct:0},
+    {q:"Kies de juiste zin:", options:["Ik moet leren vanavond.","Ik moet vanavond leren.","Ik vanavond moet leren."], correct:1}
   ]
 },
 {
@@ -2355,7 +2375,50 @@ const GRAMMAR_TOPICS = [
     {q:"wonen (stam: woon) → ik ___", options:["woonte","woonde","woonden"], correct:1},
     {q:"maken (stam: maak, eindigt op k) → hij ___", options:["maakte","maakde","maakten"], correct:0},
     {q:"leren (stam: leer) → wij ___", options:["leerte","leerden","leren"], correct:1},
-    {q:"praten (stam: praat, eindigt op t) → zij (enkelvoud) ___", options:["praatte","praatde","praten"], correct:0}
+    {q:"praten (stam: praat, eindigt op t) → zij (enkelvoud) ___", options:["praatte","praatde","praten"], correct:0},
+    {q:"fietsen (stam: fiets, eindigt op s) → ik ___", options:["fietste","fietsde","fietsen"], correct:0},
+    {q:"reizen (stam: reis, eindigt op s) → hij ___", options:["reisde","reiste","reizen"], correct:0},
+    {q:"koken (stam: kook, eindigt op k) → wij ___", options:["kookte","kookten","kookde"], correct:1}
+  ]
+},
+{
+  id:"demonstratives", level:"A2",
+  title:{en:"This/That: deze, die, dit, dat", nl:"Aanwijzende voornaamwoorden: deze, die, dit, dat", tr:"İşaret Zamirleri: deze, die, dit, dat", ar:"أسماء الإشارة: deze, die, dit, dat"},
+  explanation:{
+    en:"Dutch has two words for 'this' and two for 'that', depending on whether the noun is a de-word or a het-word. De-words (and all plurals) use 'deze' (this) and 'die' (that). Het-words use 'dit' (this) and 'dat' (that): deze tafel, die tafel, dit huis, dat huis.",
+    nl:"Het Nederlands heeft twee woorden voor 'dit/deze' en twee voor 'dat/die', afhankelijk van of het zelfstandig naamwoord een de-woord of een het-woord is. De-woorden (en alle meervouden) krijgen 'deze' en 'die'. Het-woorden krijgen 'dit' en 'dat': deze tafel, die tafel, dit huis, dat huis.",
+    tr:"Hollandaca'da 'bu' için iki, 'şu/o' için iki kelime vardır; bu, ismin 'de-kelimesi' mi yoksa 'het-kelimesi' mi olduğuna bağlıdır. De-kelimeleri (ve tüm çoğullar) 'deze' (bu) ve 'die' (şu/o) alır. Het-kelimeleri 'dit' (bu) ve 'dat' (şu/o) alır: deze tafel, die tafel, dit huis, dat huis.",
+    ar:"يوجد في الهولندية كلمتان لـ 'هذا' وكلمتان لـ 'ذلك'، حسب كون الاسم من نوع 'de' أو 'het'. كلمات 'de' (وكل صيغ الجمع) تأخذ 'deze' (هذا) و'die' (ذلك). كلمات 'het' تأخذ 'dit' (هذا) و'dat' (ذلك): deze tafel، die tafel، dit huis، dat huis."
+  },
+  questions:[
+    {q:"___ tafel is nieuw. (de-woord, dichtbij)", options:["deze","die","dit"], correct:0},
+    {q:"___ huis is groot. (het-woord, dichtbij)", options:["deze","dit","die"], correct:1},
+    {q:"Ik wil ___ boek daar hebben. (het-woord, veraf)", options:["dat","die","dit"], correct:0},
+    {q:"___ kinderen spelen buiten. (meervoud, dichtbij)", options:["deze","dit","die"], correct:0},
+    {q:"Kijk naar ___ auto daar! (de-woord, veraf)", options:["dat","die","dit"], correct:1},
+    {q:"___ appel is lekker. (de-woord, dichtbij)", options:["deze","dit","die"], correct:0},
+    {q:"Wat is ___? (het-woord, dichtbij, iets aanwijzen)", options:["dit","deze","die"], correct:0},
+    {q:"Wie is ___ meisje? (het-woord, veraf)", options:["dat","die","deze"], correct:0}
+  ]
+},
+{
+  id:"diminutives", level:"A2",
+  title:{en:"Diminutives: -je, -tje, -pje", nl:"Verkleinwoorden: -je, -tje, -pje", tr:"Küçültme Ekleri: -je, -tje, -pje", ar:"صيغ التصغير: -je, -tje, -pje"},
+  explanation:{
+    en:"Dutch loves diminutives — small forms of nouns made by adding '-je' (and its variants), used constantly in daily speech to sound casual or affectionate, not just to indicate size. Most words simply add '-je' (huis → huisje). Words ending in a vowel, l, n, r, or w often add '-tje' (auto → autootje, deur → deurtje). Words ending in -m add '-pje' (boom → boompje). All diminutives become het-words, regardless of the original article.",
+    nl:"Het Nederlands houdt van verkleinwoorden — kleine vormen van zelfstandige naamwoorden gemaakt met '-je' (en varianten), die voortdurend worden gebruikt in de omgangstaal om iets informeels of liefkozends uit te drukken, niet alleen om grootte aan te geven. De meeste woorden krijgen gewoon '-je' (huis → huisje). Woorden die eindigen op een klinker, l, n, r of w krijgen vaak '-tje' (auto → autootje, deur → deurtje). Woorden op -m krijgen '-pje' (boom → boompje). Alle verkleinwoorden worden het-woorden, ongeacht het oorspronkelijke lidwoord.",
+    tr:"Hollandaca küçültme eklerini çok sever — isimlerin '-je' (ve türevleri) eklenerek oluşturulan küçük halleri, günlük konuşmada sadece boyut belirtmek için değil, samimi ya da sevecen bir hava katmak için sürekli kullanılır. Çoğu kelime sadece '-je' alır (huis → huisje). Sesli harf, l, n, r veya w ile bitenler genelde '-tje' alır (auto → autootje, deur → deurtje). -m ile bitenler '-pje' alır (boom → boompje). Tüm küçültme ekli kelimeler, orijinal tanımlığı ne olursa olsun, 'het-kelimesi' olur.",
+    ar:"تحب الهولندية صيغ التصغير — الأشكال الصغيرة للأسماء المكوّنة بإضافة '-je' (ومشتقاتها)، وتُستخدم باستمرار في الكلام اليومي لإضفاء طابع ودي أو غير رسمي، وليس فقط للدلالة على الحجم. معظم الكلمات تضيف ببساطة '-je' (huis ← huisje). الكلمات المنتهية بحرف علة أو l أو n أو r أو w غالباً تأخذ '-tje' (auto ← autootje، deur ← deurtje). الكلمات المنتهية بـ -m تأخذ '-pje' (boom ← boompje). جميع صيغ التصغير تصبح من نوع 'het' بغض النظر عن أداة التعريف الأصلية."
+  },
+  questions:[
+    {q:"huis → verkleinwoord", options:["huisje","huistje","huispje"], correct:0},
+    {q:"auto → verkleinwoord (eindigt op klinker)", options:["autoje","autootje","autopje"], correct:1},
+    {q:"boom → verkleinwoord (eindigt op -m)", options:["boomje","boomtje","boompje"], correct:2},
+    {q:"deur → verkleinwoord (eindigt op r)", options:["deurje","deurtje","deurpje"], correct:1},
+    {q:"Wat is het lidwoord van 'tafeltje'?", options:["de","het"], correct:1},
+    {q:"kat → verkleinwoord", options:["katje","kattje","katpje"], correct:0},
+    {q:"brood → verkleinwoord", options:["broodje","broodtje","broodpje"], correct:0},
+    {q:"Kies de juiste zin (informeel gebruik):", options:["Wil je een kopje koffie?","Wil je een kop koffie klein?","Wil je koffiekop je?"], correct:0}
   ]
 },
 {
@@ -2372,7 +2435,10 @@ const GRAMMAR_TOPICS = [
     {q:"Zij ___ vorige week naar Parijs gegaan.", options:["heeft","is","was"], correct:1},
     {q:"Wij ___ een film gezien.", options:["hebben","zijn","waren"], correct:0},
     {q:"Hij ___ te laat aangekomen.", options:["heeft","is","had"], correct:1},
-    {q:"Ik ___ het boek gelezen.", options:["heb","ben","werd"], correct:0}
+    {q:"Ik ___ het boek gelezen.", options:["heb","ben","werd"], correct:0},
+    {q:"Jullie ___ hard gewerkt vandaag.", options:["hebben","zijn","waren"], correct:0},
+    {q:"De trein ___ vertrokken.", options:["heeft","is","was"], correct:1},
+    {q:"Ik ___ nog niet gegeten.", options:["heb","ben","had"], correct:0}
   ]
 },
 {
@@ -2389,7 +2455,10 @@ const GRAMMAR_TOPICS = [
     {q:"Ik blijf thuis, want ik ___ ziek.", options:["ben","ziek ben","zijn"], correct:0},
     {q:"Kies de juiste zin:", options:["Ik ga niet, omdat ik heb geen tijd.","Ik ga niet, omdat ik geen tijd heb.","Ik ga niet, omdat heb ik geen tijd."], correct:1},
     {q:"Het regent, dus ik ___ een paraplu mee.", options:["neem","ik neem","nemen"], correct:0},
-    {q:"Kies de juiste zin:", options:["Hij lacht, want hij is blij.","Hij lacht, want is hij blij.","Hij lacht, want blij hij is."], correct:0}
+    {q:"Kies de juiste zin:", options:["Hij lacht, want hij is blij.","Hij lacht, want is hij blij.","Hij lacht, want blij hij is."], correct:0},
+    {q:"Ze is moe, dus ze ___ vroeg naar bed.", options:["gaat","ze gaat","gaan"], correct:0},
+    {q:"Kies de juiste zin:", options:["Ik kom niet, omdat ik werk moet.","Ik kom niet, omdat ik moet werken.","Ik kom niet, omdat moet ik werken."], correct:1},
+    {q:"Hij is verdrietig, want zijn hond ___ weg.", options:["is","hij is","zijn"], correct:0}
   ]
 },
 {
@@ -2406,7 +2475,10 @@ const GRAMMAR_TOPICS = [
     {q:"zijn → hij ___", options:["is","was","zijnde"], correct:1},
     {q:"hebben → wij ___", options:["had","hadden","heeft"], correct:1},
     {q:"komen → zij (enkelvoud) ___", options:["kwam","kwamen","komt"], correct:0},
-    {q:"zien → jij ___ dat?", options:["zag","ziet","zagen"], correct:0}
+    {q:"zien → jij ___ dat?", options:["zag","ziet","zagen"], correct:0},
+    {q:"doen → wij ___ boodschappen.", options:["deden","deed","doen"], correct:0},
+    {q:"eten → zij (meervoud) ___ pizza.", options:["aten","at","eten"], correct:0},
+    {q:"geven → ik ___ hem het boek.", options:["gaf","geefde","gaven"], correct:0}
   ]
 },
 {
@@ -2423,7 +2495,10 @@ const GRAMMAR_TOPICS = [
     {q:"Jij voelt ___ niet lekker.", options:["me","je","zich"], correct:1},
     {q:"Zij (enkelvoud) herinnert ___ die dag nog goed.", options:["me","je","zich"], correct:2},
     {q:"Wij wassen ___ elke ochtend.", options:["ons","jullie","zich"], correct:0},
-    {q:"Jullie vergissen ___ vaak.", options:["ons","je","zich"], correct:1}
+    {q:"Jullie vergissen ___ vaak.", options:["ons","je","zich"], correct:1},
+    {q:"Hij scheert ___ elke ochtend.", options:["me","je","zich"], correct:2},
+    {q:"Wij vervelen ___ hier.", options:["ons","je","zich"], correct:0},
+    {q:"Ik verheug ___ op de vakantie.", options:["me","zich","ons"], correct:0}
   ]
 },
 {
@@ -2440,7 +2515,50 @@ const GRAMMAR_TOPICS = [
     {q:"het boek ___ ik lees", options:["die","dat"], correct:1},
     {q:"de kinderen ___ buiten spelen", options:["die","dat"], correct:0},
     {q:"het huis ___ te koop staat", options:["die","dat"], correct:1},
-    {q:"de auto ___ voor de deur staat", options:["die","dat"], correct:0}
+    {q:"de auto ___ voor de deur staat", options:["die","dat"], correct:0},
+    {q:"de mensen ___ hier wonen", options:["die","dat"], correct:0},
+    {q:"het meisje ___ naast mij zit", options:["die","dat"], correct:1},
+    {q:"de stad ___ ik het mooist vind", options:["die","dat"], correct:0}
+  ]
+},
+{
+  id:"er-existential", level:"B1",
+  title:{en:"Using 'Er'", nl:"Het gebruik van 'er'", tr:"'Er' Kelimesinin Kullanımı", ar:"استخدام 'er'"},
+  explanation:{
+    en:"'Er' is a small but essential word with several uses. Existential 'er' introduces something new/unspecified into a sentence, similar to English 'there is/are': 'Er staat een fiets buiten' (There's a bike outside). 'Er' is also used to refer back to a place or an amount already mentioned, replacing a prepositional phrase: 'Ik kom net van het station. Ik was er om 9 uur' (I was there at 9). Note that 'er' is required whenever the subject of a sentence is indefinite and placed after the verb.",
+    nl:"'Er' is een klein maar essentieel woord met meerdere functies. Het existentiële 'er' introduceert iets nieuws/onbepaalds in een zin, vergelijkbaar met het Engelse 'there is/are': 'Er staat een fiets buiten'. 'Er' wordt ook gebruikt om terug te verwijzen naar een plaats of hoeveelheid die al genoemd is, ter vervanging van een voorzetselconstructie: 'Ik kom net van het station. Ik was er om 9 uur'. Let op: 'er' is verplicht wanneer het onderwerp van een zin onbepaald is en na het werkwoord staat.",
+    tr:"'Er', birkaç farklı kullanımı olan küçük ama vazgeçilmez bir kelimedir. Varoluşsal 'er', İngilizce'deki 'there is/are' gibi, cümleye yeni/belirsiz bir şey tanıtır: 'Er staat een fiets buiten' (Dışarıda bir bisiklet var). 'Er' ayrıca daha önce bahsedilen bir yere veya miktara geri atıfta bulunmak için, bir edat öbeğinin yerine kullanılır: 'Ik kom net van het station. Ik was er om 9 uur' (Oradaydım, saat 9'da). Cümlenin öznesi belirsizse ve fiilden sonra geliyorsa 'er' kullanımı zorunludur.",
+    ar:"'er' كلمة صغيرة لكنها أساسية ولها عدة استخدامات. 'er' الوجودية تُدخل شيئاً جديداً/غير محدد في الجملة، شبيهة بـ 'there is/are' الإنجليزية: 'Er staat een fiets buiten' (توجد دراجة في الخارج). تُستخدم 'er' أيضاً للإشارة إلى مكان أو كمية ذُكرت سابقاً، بدلاً من عبارة جر: 'Ik kom net van het station. Ik was er om 9 uur' (كنت هناك الساعة 9). لاحظ أن 'er' إلزامية عندما يكون فاعل الجملة غير محدد ويأتي بعد الفعل."
+  },
+  questions:[
+    {q:"___ staat een fiets voor de deur.", options:["Er","Het","Daar"], correct:0},
+    {q:"___ zijn veel mensen op straat.", options:["Er","Het","Zij"], correct:0},
+    {q:"Woon je in Utrecht? Ja, ik woon ___.", options:["er","het","daar"], correct:0},
+    {q:"Heb je geld? Nee, ik heb ___ niet.", options:["er","het","hem"], correct:0},
+    {q:"___ ligt een boek op tafel.", options:["Er","Het","Deze"], correct:0},
+    {q:"Kies de juiste zin:", options:["Een probleem is met de auto.","Er is een probleem met de auto.","Het is een probleem met de auto."], correct:1},
+    {q:"Hoeveel appels heb je? Ik heb ___ drie.", options:["er","het","die"], correct:0},
+    {q:"___ wonen twee katten in dit huis.", options:["Er","Het","Zij"], correct:0}
+  ]
+},
+{
+  id:"zou-graag", level:"B1",
+  title:{en:"Polite Requests: zou graag willen", nl:"Beleefd verzoek: zou graag willen", tr:"Nazik İstek: zou graag willen", ar:"طلب مهذب: zou graag willen"},
+  explanation:{
+    en:"To make a polite or softened request, Dutch uses 'zou(den)' + 'graag' (gladly) + 'willen' (want) + infinitive, similar to 'I would like to...' in English: 'Ik zou graag een kopje koffie willen' (I would like a cup of coffee). This is much more polite than the direct 'Ik wil'. The same pattern works with 'kunnen' for polite requests: 'Zou u mij kunnen helpen?' (Could you help me?)",
+    nl:"Om een beleefd of afgezwakt verzoek te doen, gebruikt het Nederlands 'zou(den)' + 'graag' + 'willen' + infinitief: 'Ik zou graag een kopje koffie willen'. Dit is veel beleefder dan het directe 'Ik wil'. Hetzelfde patroon werkt met 'kunnen' voor een beleefd verzoek: 'Zou u mij kunnen helpen?'",
+    tr:"Nazik veya yumuşatılmış bir istek yapmak için Hollandaca 'zou(den)' + 'graag' (memnuniyetle) + 'willen' (istemek) + mastar kullanır, İngilizce'deki 'I would like to...' gibi: 'Ik zou graag een kopje koffie willen' (Bir fincan kahve istiyorum/rica etsem). Bu, doğrudan 'Ik wil'den çok daha kibardır. Aynı kalıp nazik bir istek için 'kunnen' ile de çalışır: 'Zou u mij kunnen helpen?' (Bana yardım edebilir misiniz?)",
+    ar:"لتقديم طلب مهذب أو ملطف، تستخدم الهولندية 'zou(den)' + 'graag' (بكل سرور) + 'willen' (يريد) + المصدر، شبيهة بـ 'I would like to...' الإنجليزية: 'Ik zou graag een kopje koffie willen' (أود فنجان قهوة). هذا أكثر تهذيباً بكثير من 'Ik wil' المباشرة. نفس النمط يعمل مع 'kunnen' لطلب مهذب: 'Zou u mij kunnen helpen?' (هل يمكنك مساعدتي؟)"
+  },
+  questions:[
+    {q:"Ik ___ graag een tafel voor twee willen. (beleefd)", options:["zou","wil","ga"], correct:0},
+    {q:"___ u mij kunnen helpen? (beleefd verzoek)", options:["Zou","Kan","Moet"], correct:0},
+    {q:"Wij ___ graag de rekening willen, alstublieft.", options:["zouden","willen","zijn"], correct:0},
+    {q:"Kies de meest beleefde zin:", options:["Ik wil water.","Ik zou graag water willen.","Geef mij water."], correct:1},
+    {q:"___ jullie ons morgen kunnen bellen?", options:["Zouden","Kunnen","Moeten"], correct:0},
+    {q:"Ik zou ___ een kamer willen reserveren.", options:["graag","goed","veel"], correct:0},
+    {q:"Kies de meest beleefde zin:", options:["Zou u de deur kunnen sluiten?","Sluit de deur!","U moet de deur sluiten."], correct:0},
+    {q:"Ze ___ graag meer informatie willen ontvangen.", options:["zou","wil","is"], correct:0}
   ]
 },
 {
@@ -2457,7 +2575,10 @@ const GRAMMAR_TOPICS = [
     {q:"lekker (vergelijking) → ?", options:["lekkerer","lekkerder","lekkerst"], correct:1},
     {q:"goed (vergelijking, onregelmatig) → ?", options:["goeder","beter","goedst"], correct:1},
     {q:"Dit is de ___ dag van mijn leven. (goed, overtreffend)", options:["beter","beste","goedste"], correct:1},
-    {q:"klein (overtreffend) → ?", options:["kleinst","kleiner","kleinder"], correct:0}
+    {q:"klein (overtreffend) → ?", options:["kleinst","kleiner","kleinder"], correct:0},
+    {q:"veel (vergelijking, onregelmatig) → ?", options:["veeler","meer","veelst"], correct:1},
+    {q:"Dit huis is ___ dan dat huis. (duur)", options:["duurder","duurst","duurer"], correct:0},
+    {q:"weinig (vergelijking, onregelmatig) → ?", options:["weiniger","minder","weinigst"], correct:1}
   ]
 },
 {
@@ -2474,7 +2595,10 @@ const GRAMMAR_TOPICS = [
     {q:"Ik denk vaak ___ jou.", options:["op","aan","in"], correct:1},
     {q:"Ik houd ___ chocolade.", options:["van","aan","op"], correct:0},
     {q:"Ze verheugt zich ___ de vakantie.", options:["aan","op","van"], correct:1},
-    {q:"Hij is verliefd ___ haar.", options:["op","in","van"], correct:0}
+    {q:"Hij is verliefd ___ haar.", options:["op","in","van"], correct:0},
+    {q:"Ik ben trots ___ mijn zoon.", options:["op","aan","in"], correct:0},
+    {q:"Zij is bang ___ spinnen.", options:["voor","van","aan"], correct:0},
+    {q:"Wij praten ___ het weer.", options:["over","van","aan"], correct:0}
   ]
 },
 {
@@ -2491,7 +2615,10 @@ const GRAMMAR_TOPICS = [
     {q:"De brief ___ gisteren geschreven.", options:["wordt","werd","is"], correct:1},
     {q:"Het probleem is al ___.", options:["opgelost","oplossen","oplost"], correct:0},
     {q:"De auto's ___ hier gemaakt.", options:["worden","wordt","zijn"], correct:0},
-    {q:"De taart is door haar ___.", options:["bakken","gebakken","bakte"], correct:1}
+    {q:"De taart is door haar ___.", options:["bakken","gebakken","bakte"], correct:1},
+    {q:"Deze regels ___ streng gecontroleerd.", options:["worden","wordt","zijn"], correct:0},
+    {q:"Het huis ___ vorig jaar verkocht.", options:["wordt","werd","is"], correct:1},
+    {q:"De uitslag wordt morgen ___.", options:["bekendmaken","bekendgemaakt","bekendmaakt"], correct:1}
   ]
 },
 {
@@ -2508,7 +2635,10 @@ const GRAMMAR_TOPICS = [
     {q:"Als ik jou was, ___ ik dat niet doen.", options:["doe","zou","deed"], correct:1},
     {q:"Als ik meer tijd had, ___ ik Nederlands studeren.", options:["zal","zou","ga"], correct:1},
     {q:"Als je hard werkt, ___ je slagen.", options:["zal","zult","zou"], correct:1},
-    {q:"Als ik de loterij zou winnen, ___ ik een huis kopen.", options:["zal","zou","ga"], correct:1}
+    {q:"Als ik de loterij zou winnen, ___ ik een huis kopen.", options:["zal","zou","ga"], correct:1},
+    {q:"Als ze meer geld had, ___ ze een groter huis kopen.", options:["zou","zal","gaat"], correct:0},
+    {q:"Kies de juiste zin (reëel):", options:["Als het sneeuwt, we skiën.","Als het sneeuwt, gaan we skiën.","Als het sneeuwt, zouden we skiën."], correct:1},
+    {q:"Als ik jou ___, zou ik dat niet zeggen. (onwerkelijk)", options:["ben","was","zou zijn"], correct:1}
   ]
 },
 {
@@ -2525,7 +2655,10 @@ const GRAMMAR_TOPICS = [
     {q:"Ze spaart geld ___ een huis te kopen.", options:["om","voor","met"], correct:0},
     {q:"Hij probeert vroeg ___.", options:["op te staan","om op te staan","opstaan"], correct:0},
     {q:"We gaan naar de markt ___ groente te kopen.", options:["om","aan","in"], correct:0},
-    {q:"Ik heb geen tijd ___ dat te doen.", options:["om","voor","aan"], correct:0}
+    {q:"Ik heb geen tijd ___ dat te doen.", options:["om","voor","aan"], correct:0},
+    {q:"Kies de juiste zin (proberen, geen 'om'):", options:["Hij probeert om te slapen.","Hij probeert te slapen.","Hij probeert slapen."], correct:1},
+    {q:"Zij werkt hard ___ haar examen te halen.", options:["om","voor","met"], correct:0},
+    {q:"Kies de juiste zin (beginnen, geen 'om'):", options:["Ze begint te koken.","Ze begint om te koken.","Ze begint aan koken."], correct:0}
   ]
 },
 {
@@ -2542,7 +2675,50 @@ const GRAMMAR_TOPICS = [
     {q:"Zij zei: \"Ik werk hard.\" → Zij zei dat ze hard ___.", options:["werkt","werkte","gewerkt"], correct:1},
     {q:"Hij zei: \"Ik wil dat boek lezen.\" → Hij zei dat hij dat boek ___ lezen.", options:["wil","wilde","zou"], correct:1},
     {q:"Ze zei: \"Ik kom morgen.\" → Ze zei dat ze morgen ___.", options:["komt","kwam","is gekomen"], correct:1},
-    {q:"Hij zei: \"Ik heb geen geld.\" → Hij zei dat hij geen geld ___.", options:["heeft","had","zou hebben"], correct:1}
+    {q:"Hij zei: \"Ik heb geen geld.\" → Hij zei dat hij geen geld ___.", options:["heeft","had","zou hebben"], correct:1},
+    {q:"Zij zei: \"Ik ga morgen weg.\" → Zij zei dat ze de volgende dag ___.", options:["weggaat","wegging","weggegaan"], correct:1},
+    {q:"Hij vroeg: \"Kom je ook?\" → Hij vroeg of ik ook ___.", options:["kom","kwam","zou komen"], correct:1},
+    {q:"Ze zei: \"Ik begrijp het niet.\" → Ze zei dat ze het niet ___.", options:["begrijpt","begreep","begrepen"], correct:1}
+  ]
+},
+{
+  id:"subordinate-connectors", level:"B2",
+  title:{en:"Time & Condition Connectors", nl:"Voegwoorden van tijd en voorwaarde", tr:"Zaman ve Koşul Bağlaçları", ar:"أدوات ربط الزمان والشرط"},
+  explanation:{
+    en:"Several subordinating conjunctions express time or condition and, like 'omdat', send the conjugated verb to the end of the clause: 'nadat' (after), 'voordat' (before), 'terwijl' (while), 'zodra' (as soon as), 'mits' (provided that), 'tenzij' (unless). Example: 'Nadat ik gegeten had, ging ik slapen' (After I had eaten, I went to sleep).",
+    nl:"Verschillende onderschikkende voegwoorden drukken tijd of voorwaarde uit en sturen, net als 'omdat', het vervoegde werkwoord naar het einde van de bijzin: 'nadat', 'voordat', 'terwijl', 'zodra', 'mits', 'tenzij'. Voorbeeld: 'Nadat ik gegeten had, ging ik slapen'.",
+    tr:"Birçok bağımlı bağlaç zaman veya koşul ifade eder ve tıpkı 'omdat' gibi çekimli fiili cümleciğin sonuna gönderir: 'nadat' (sonra), 'voordat' (önce), 'terwijl' (iken), 'zodra' (olur olmaz), 'mits' (şartıyla), 'tenzij' (aksi takdirde). Örnek: 'Nadat ik gegeten had, ging ik slapen' (Yemek yedikten sonra uyumaya gittim).",
+    ar:"تُعبّر عدة أدوات ربط تابعة عن الزمان أو الشرط، وتُرسل الفعل المصرّف إلى نهاية الجملة الفرعية تماماً مثل 'omdat': 'nadat' (بعد)، 'voordat' (قبل)، 'terwijl' (بينما)، 'zodra' (حالما)، 'mits' (بشرط)، 'tenzij' (إلا إذا). مثال: 'Nadat ik gegeten had, ging ik slapen' (بعد أن أكلت، ذهبت لأنام)."
+  },
+  questions:[
+    {q:"Nadat ik ___ had, ging ik slapen. (eten)", options:["gegeten","eet","at"], correct:0},
+    {q:"Voordat je ___, moet je je handen wassen. (eten)", options:["eet","at","gegeten"], correct:0},
+    {q:"Terwijl zij ___, luisterde hij muziek. (koken)", options:["kookte","kookt","gekookt"], correct:0},
+    {q:"Zodra het ___, ga ik naar buiten. (stoppen met regenen)", options:["stopt","stopte","gestopt"], correct:0},
+    {q:"Je mag komen, mits je op tijd ___.", options:["bent","was","zou zijn"], correct:0},
+    {q:"Ik ga wandelen, tenzij het ___.", options:["regent","regende","geregend"], correct:0},
+    {q:"Kies de juiste zin:", options:["Nadat hij thuiskwam hij at.","Nadat hij thuiskwam, at hij.","Nadat thuiskwam hij, at hij."], correct:1},
+    {q:"Voordat we ___, controleerden we alles nog een keer. (vertrekken)", options:["vertrokken","vertrekken","vertrokken zijn"], correct:0}
+  ]
+},
+{
+  id:"modal-passive", level:"B2",
+  title:{en:"Passive with Modal Verbs", nl:"Passief met modale werkwoorden", tr:"Modal Fiillerle Edilgen Çatı", ar:"المبني للمجهول مع الأفعال المساعدة"},
+  explanation:{
+    en:"When a modal verb (moeten, kunnen, mogen, willen) is combined with the passive voice, use: modal verb + ... + 'worden' + past participle, all at the end of the sentence. Example: 'Het werk moet vandaag gedaan worden' (The work must be done today). This differs from a simple passive, which uses 'worden' directly conjugated.",
+    nl:"Wanneer een modaal werkwoord (moeten, kunnen, mogen, willen) gecombineerd wordt met de lijdende vorm, gebruik je: modaal werkwoord + ... + 'worden' + voltooid deelwoord, helemaal aan het einde van de zin. Voorbeeld: 'Het werk moet vandaag gedaan worden'. Dit verschilt van een eenvoudig passief, waarbij 'worden' direct vervoegd wordt.",
+    tr:"Bir modal fiil (moeten, kunnen, mogen, willen) edilgen çatıyla birleştirildiğinde şu sıralama kullanılır: modal fiil + ... + 'worden' + geçmiş zaman ortacı, hepsi cümlenin sonunda. Örnek: 'Het werk moet vandaag gedaan worden' (İş bugün yapılmalı). Bu, 'worden'in doğrudan çekimlendiği basit edilgenden farklıdır.",
+    ar:"عندما يُجمع فعل مساعد (moeten، kunnen، mogen، willen) مع المبني للمجهول، يُستخدم: الفعل المساعد + ... + 'worden' + اسم المفعول، كلها في نهاية الجملة. مثال: 'Het werk moet vandaag gedaan worden' (يجب إنجاز العمل اليوم). يختلف هذا عن المبني للمجهول البسيط الذي يُصرَّف فيه 'worden' مباشرة."
+  },
+  questions:[
+    {q:"Het werk moet vandaag ___ ___. (doen)", options:["gedaan / worden","doen / worden","gedaan / zijn"], correct:0},
+    {q:"Dit probleem kan snel ___ ___. (oplossen)", options:["opgelost / worden","oplossen / worden","opgelost / zijn"], correct:0},
+    {q:"De brief mag niet ___ ___. (openen)", options:["geopend / worden","openen / worden","geopend / zijn"], correct:0},
+    {q:"Kies de juiste zin:", options:["De auto moet gerepareerd worden.","De auto moet worden gerepareerd worden.","De auto moet repareren worden."], correct:0},
+    {q:"Deze regels moeten door iedereen ___ ___. (volgen)", options:["gevolgd / worden","volgen / worden","gevolgd / zijn"], correct:0},
+    {q:"Het huis kan snel ___ ___. (verkopen)", options:["verkocht / worden","verkopen / worden","verkocht / zijn"], correct:0},
+    {q:"Dit boek moet voor vrijdag ___ ___. (lezen)", options:["gelezen / worden","lezen / worden","gelezen / zijn"], correct:0},
+    {q:"Kies de juiste zin:", options:["De taak moet af gemaakt worden.","De taak moet afgemaakt worden.","De taak moet afmaken worden."], correct:1}
   ]
 }
 ];
@@ -4209,6 +4385,7 @@ const STRINGS = {
   grammarIntro:  { en:"Pick a topic, read the explanation, then test yourself.", nl:"Kies een onderwerp, lees de uitleg en test jezelf.", tr:"Bir konu seç, açıklamayı oku, sonra kendini test et.", ar:"اختر موضوعاً، اقرأ الشرح، ثم اختبر نفسك." },
   grammarAllTopics: { en:"All topics", nl:"Alle onderwerpen", tr:"Tüm konular", ar:"جميع المواضيع" },
   grammarStartQuiz: { en:"Start quiz", nl:"Start de test", tr:"Testi başlat", ar:"ابدأ الاختبار" },
+  grammarMixedTitle: { en:"🎲 Mixed Practice — all topics", nl:"🎲 Gemengde oefening — alle onderwerpen", tr:"🎲 Karışık Alıştırma — tüm konular", ar:"🎲 تدريب مختلط — كل المواضيع" },
   oppositeInstruction: { en:"What's the opposite?", nl:"Wat is het tegenovergestelde?", tr:"Zıt anlamı nedir?", ar:"ما هو الضد؟" },
   writeInstruction: { en:"How do you say this in Dutch?", nl:"Hoe zeg je dit in het Nederlands?", tr:"Bunu Hollandaca nasıl söylersin?", ar:"كيف تقول هذا بالهولندية؟" },
   writePlaceholder: { en:"Type the Dutch word…", nl:"Typ het Nederlandse woord…", tr:"Hollandaca kelimeyi yaz…", ar:"اكتب الكلمة الهولندية…" },
@@ -4343,8 +4520,8 @@ function setLanguage(lang){
   if(writeScreen.classList.contains('active')) startWrite(writeDifficulty);
   if(oppositesScreen.classList.contains('active')) startOpposites();
   if(grammarScreen.classList.contains('active')){
-    if(currentGrammarTopic && document.getElementById('grammarOptions')){
-      // mid-quiz: just redraw the current question in the new language
+    if(document.getElementById('grammarOptions')){
+      // mid-quiz (single-topic or mixed): just redraw the current question in the new language
       renderGrammarQuestion();
     } else if(currentGrammarTopic && document.querySelector('.grammar-explain-card')){
       openGrammarTopic(currentGrammarTopic.id);
@@ -5411,11 +5588,21 @@ function renderOppositesResult(){
    Each topic: an explanation (translated into the current UI language) followed
    by a short multiple-choice quiz on that specific grammar point. The Dutch
    example sentences and question stems always stay in Dutch — only the
-   explanatory prose is translated. */
+   explanatory prose is translated.
+
+   Every quiz attempt draws a fresh random subset from that topic's question
+   pool (each topic now holds more questions than a single session uses) and
+   shuffles the answer order too, so retrying a topic doesn't feel identical
+   to the last attempt. A "Mixed Practice" mode pools questions from every
+   topic across all levels into one combined, freshly-shuffled quiz. */
 const grammarBody = document.getElementById('grammarBody');
 let currentGrammarTopic = null;
+let currentGrammarQuestions = [];
+let isMixedGrammarQuiz = false;
 let grammarQIdx = 0;
 let grammarScore = 0;
+const GRAMMAR_TOPIC_QUIZ_LEN = 6;
+const GRAMMAR_MIXED_QUIZ_LEN = 15;
 
 function grammarExplanationText(topic){
   return topic.explanation[currentLang] || topic.explanation.en;
@@ -5430,7 +5617,11 @@ function renderGrammarTopicList(){
     if(!byLevel[topic.level]) byLevel[topic.level] = [];
     byLevel[topic.level].push(topic);
   });
-  let html = `<div class="grammar-intro">${t('grammarIntro')}</div>`;
+  let html = `<div class="grammar-intro">${t('grammarIntro')}</div>
+    <button class="grammar-topic-card grammar-mixed-card" id="grammarMixedBtn">
+      <span class="grammar-topic-title">${t('grammarMixedTitle')}</span>
+      <span class="grammar-topic-arrow">›</span>
+    </button>`;
   Object.keys(byLevel).forEach(level=>{
     html += `<div class="grammar-level-label">${level}</div><div class="grammar-topic-list">`;
     byLevel[level].forEach(topic=>{
@@ -5442,15 +5633,17 @@ function renderGrammarTopicList(){
     html += `</div>`;
   });
   grammarBody.innerHTML = html;
-  grammarBody.querySelectorAll('.grammar-topic-card').forEach(card=>{
+  grammarBody.querySelectorAll('.grammar-topic-card[data-id]').forEach(card=>{
     card.onclick = ()=> openGrammarTopic(card.dataset.id);
   });
+  document.getElementById('grammarMixedBtn').onclick = startMixedGrammarQuiz;
 }
 
 function openGrammarTopic(topicId){
   const topic = GRAMMAR_TOPICS.find(t=>t.id===topicId);
   if(!topic) return;
   currentGrammarTopic = topic;
+  isMixedGrammarQuiz = false;
   grammarBody.innerHTML = `
     <button class="grammar-back-btn" id="grammarBackToList">← ${t('grammarAllTopics')}</button>
     <div class="grammar-explain-card">
@@ -5466,42 +5659,66 @@ function openGrammarTopic(topicId){
 
 function startGrammarQuiz(topic){
   currentGrammarTopic = topic;
+  isMixedGrammarQuiz = false;
+  const n = Math.min(GRAMMAR_TOPIC_QUIZ_LEN, topic.questions.length);
+  currentGrammarQuestions = shuffled(topic.questions).slice(0, n);
+  grammarQIdx = 0;
+  grammarScore = 0;
+  renderGrammarQuestion();
+}
+
+function startMixedGrammarQuiz(){
+  isMixedGrammarQuiz = true;
+  currentGrammarTopic = null;
+  const pool = [];
+  GRAMMAR_TOPICS.forEach(topic=>{
+    topic.questions.forEach(q=> pool.push({ ...q, topicLevel: topic.level, topicId: topic.id }));
+  });
+  const n = Math.min(GRAMMAR_MIXED_QUIZ_LEN, pool.length);
+  currentGrammarQuestions = shuffled(pool).slice(0, n);
   grammarQIdx = 0;
   grammarScore = 0;
   renderGrammarQuestion();
 }
 
 function renderGrammarQuestion(){
-  const topic = currentGrammarTopic;
-  if(grammarQIdx >= topic.questions.length){ renderGrammarResult(); return; }
-  const q = topic.questions[grammarQIdx];
+  if(grammarQIdx >= currentGrammarQuestions.length){ renderGrammarResult(); return; }
+  const q = currentGrammarQuestions[grammarQIdx];
+  const contextLabel = isMixedGrammarQuiz
+    ? `${q.topicLevel} · ${grammarTitleText(GRAMMAR_TOPICS.find(gt=>gt.id===q.topicId))}`
+    : grammarTitleText(currentGrammarTopic);
   grammarBody.innerHTML = `
     <div class="quiz-progress">
-      <span>${t('quizQuestion')} <b>${grammarQIdx+1}</b> / ${topic.questions.length}</span>
+      <span>${t('quizQuestion')} <b>${grammarQIdx+1}</b> / ${currentGrammarQuestions.length}</span>
       <span>${t('quizScore')} <b>${grammarScore}</b></span>
     </div>
     <div class="quiz-card">
-      <div class="grammar-topic-level">${grammarTitleText(topic)}</div>
+      <div class="grammar-topic-level">${contextLabel}</div>
       <div class="grammar-question">${q.q}</div>
     </div>
     <div class="grammar-chip-row" id="grammarOptions"></div>
   `;
   const optWrap = document.getElementById('grammarOptions');
-  q.options.forEach((opt, i)=>{
+  // shuffle answer order on every render so the correct choice isn't always
+  // sitting in the same visual slot on repeated attempts
+  const shuffledOpts = shuffled(q.options.map((opt, i)=> ({ text: opt, isCorrect: i === q.correct })));
+  shuffledOpts.forEach(opt=>{
     const b = document.createElement('button');
     b.className = 'quiz-opt grammar-chip';
-    b.textContent = opt;
-    b.onclick = ()=> answerGrammar(i === q.correct, b, q.options[q.correct]);
+    b.textContent = opt.text;
+    b.onclick = ()=> answerGrammar(opt.isCorrect, b);
     optWrap.appendChild(b);
   });
 }
 
-function answerGrammar(isCorrect, btnEl, correctText){
+function answerGrammar(isCorrect, btnEl){
   const buttons = document.querySelectorAll('#grammarOptions .quiz-opt');
   buttons.forEach(b=> b.disabled = true);
   if(isCorrect){ btnEl.classList.add('correct'); grammarScore++; }
   else{
     btnEl.classList.add('wrong');
+    const q = currentGrammarQuestions[grammarQIdx];
+    const correctText = q.options[q.correct];
     buttons.forEach(b=>{ if(b.textContent === correctText) b.classList.add('correct'); });
   }
   recordActivityToday();
@@ -5509,17 +5726,18 @@ function answerGrammar(isCorrect, btnEl, correctText){
 }
 
 function renderGrammarResult(){
-  const topic = currentGrammarTopic;
-  const pct = topic.questions.length ? Math.round((grammarScore/topic.questions.length)*100) : 0;
+  const total = currentGrammarQuestions.length;
+  const pct = total ? Math.round((grammarScore/total)*100) : 0;
   grammarBody.innerHTML = `
     <div class="quiz-result">
-      <div class="score">${grammarScore}/${topic.questions.length}</div>
+      <div class="score">${grammarScore}/${total}</div>
       <div class="score-label">${pct}% ${t('quizCorrect')}</div>
       <button class="quiz-restart" id="grammarRetryTopic">${t('quizAgain')}</button>
       <button class="quiz-restart secondary" id="grammarAllTopicsBtn">${t('grammarAllTopics')}</button>
     </div>
   `;
-  document.getElementById('grammarRetryTopic').onclick = ()=> startGrammarQuiz(topic);
+  document.getElementById('grammarRetryTopic').onclick = ()=>
+    isMixedGrammarQuiz ? startMixedGrammarQuiz() : startGrammarQuiz(currentGrammarTopic);
   document.getElementById('grammarAllTopicsBtn').onclick = renderGrammarTopicList;
 }
 
