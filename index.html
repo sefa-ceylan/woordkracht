@@ -1342,13 +1342,12 @@ body.light-mode .streak-day{ background: rgba(36,26,18,0.05); border-color: rgba
 }
 .resource-link:active{ transform: scale(0.96); }
 
-/* full-page rotating photo background — light mode only. Uses each div's own
-   background-image (cover/center) so it always fills the page correctly no matter
-   how tall the page ends up being; no viewport-height math, no seams. */
+/* full-page rotating background pattern — light mode only. Crisp, tileable
+   Hero-Patterns-style SVG textures (vector, so always perfectly sharp at any
+   screen size — no blur, no compression artifacts like the old stock photos). */
 .bg-photo-full{
   position:absolute; inset:0; z-index:0;
-  background-size:cover;
-  background-position:center;
+  background-repeat:repeat;
   opacity:0;
   transition: opacity 1.6s ease-in-out;
   will-change: opacity;
@@ -1418,9 +1417,6 @@ body.light-mode .scene-label{ color: rgba(36,26,18,0.4); }
 /* ---------- light mode overrides ---------- */
 body.light-mode .page{
   background: linear-gradient(180deg, #eaf6fb 0%, #fdf3df 100%);
-}
-body.light-mode .bg-photo-full{
-  filter: saturate(1.08) brightness(1.02) contrast(1.02);
 }
 body.light-mode .eyebrow{ color: var(--brick-dark); }
 body.light-mode .subtitle{ color:#5a4634; }
@@ -5205,24 +5201,20 @@ const sceneCaption = document.getElementById('sceneCaption');
 const sceneCredit = document.getElementById('sceneCredit');
 
 function updateBackgroundTheme(){
-  // level/type selection no longer changes the background — the gallery rotates on its own.
+  // level/type selection no longer changes the background — the pattern rotates on its own.
   // kept as a safe no-op so existing call sites don't need to change.
 }
 
-/* real photo gallery — cycles through several curated Dutch scenes on its own,
-   independent of level/type selection, spanning the full page as a background.
-   Only visible in light mode (see CSS: body.light-mode .bg-photo-full). Each photo
-   is preloaded before being applied as a CSS background, so a failed/slow load
-   never shows a broken or empty layer. */
-const GALLERY_PHOTOS = [
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/The_windmills_of_Kinderdijk.JPG?width=640", caption:"Kinderdijk windmills", credit:"Wikimedia Commons · CC BY-SA 3.0" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Amsterdam_Stadt_der_Fahrr%C3%A4der_(39638868592).jpg?width=640", caption:"Bicycles & canals", credit:"Wikimedia Commons · CC BY" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Colorful_canal_houses_at_golden_hour_in_Damrak_avenue_Amsterdam_the_Netherlands.jpg?width=640", caption:"Amsterdam canals & cityscape", credit:"Basile Morin · CC BY-SA 4.0" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Heinen_Delfts_Blauw,_Delft_(2018).jpg?width=640", caption:"Delft Blue porcelain", credit:"Wikimedia Commons · CC BY-SA 4.0" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Oosterscheldekering,_the_largest_of_thirteen_Delta_Works.jpg?width=640", caption:"Oosterscheldekering (Deltawerken)", credit:"Isai Symens · CC BY-SA 4.0" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Amsterdam_Centraal_2016-09-13.jpg?width=640", caption:"Amsterdam Centraal station", credit:"Slaunger · CC BY-SA 4.0" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Station_Rotterdam_Centraal.jpg?width=640", caption:"Rotterdam Centraal station", credit:"Sjors Provoost · CC BY 2.0" },
-  { url:"https://commons.wikimedia.org/wiki/Special:FilePath/Utrecht_Centraal_station_vanaf_voetgangersbrug_2017_1.jpg?width=640", caption:"Utrecht Centraal station", credit:"Wikimedia Commons · CC BY-SA 4.0" },
+/* light-mode full-page background — a small rotating set of original, crisp
+   SVG line-pattern textures (Hero-Patterns-style: subtle, tileable, vector).
+   Being vector graphics they're always perfectly sharp on any screen and are
+   a few hundred bytes each, unlike the stock photos this replaced which were
+   blurry at full-page size and much heavier to load. */
+const GALLERY_PATTERNS = [
+  { name:"Delft tegels", tile:56, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1NicgaGVpZ2h0PSc1Nicgdmlld0JveD0nMCAwIDU2IDU2Jz48ZyBmaWxsPSdub25lJyBzdHJva2U9JyNjODk2MmEnIHN0cm9rZS13aWR0aD0nMScgb3BhY2l0eT0nMC41NSc+PHBhdGggZD0nTTAgMjhMMjggMEw1NiAyOEwyOCA1NlonLz48Y2lyY2xlIGN4PScyOCcgY3k9JzI4JyByPSczJyBmaWxsPScjNGE4NDk0JyBzdHJva2U9J25vbmUnIG9wYWNpdHk9JzAuNCcvPjwvZz48L3N2Zz4=" },
+  { name:"Gracht golven", tile:72, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3MicgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDcyIDI0Jz48cGF0aCBkPSdNMCAxMiBRMTggMCAzNiAxMiBUNzIgMTInIGZpbGw9J25vbmUnIHN0cm9rZT0nIzRhODQ5NCcgc3Ryb2tlLXdpZHRoPScxLjQnIG9wYWNpdHk9JzAuNScvPjwvc3ZnPg==" },
+  { name:"Tulpen stippen", tile:32, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMicgdmlld0JveD0nMCAwIDMyIDMyJz48Y2lyY2xlIGN4PScxNicgY3k9JzE2JyByPScyLjInIGZpbGw9JyNlODYyMmMnIG9wYWNpdHk9JzAuNCcvPjwvc3ZnPg==" },
+  { name:"Molenwieken", tile:48, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0OCcgaGVpZ2h0PSc0OCcgdmlld0JveD0nMCAwIDQ4IDQ4Jz48ZyBzdHJva2U9JyNjODk2MmEnIHN0cm9rZS13aWR0aD0nMS4zJyBvcGFjaXR5PScwLjQ1Jz48cGF0aCBkPSdNMjQgOCBMMjQgMjQgTTI0IDI0IEwzNiAzMiBNMjQgMjQgTDEyIDMyJy8+PGNpcmNsZSBjeD0nMjQnIGN5PScyNCcgcj0nMicgZmlsbD0nI2U4NjIyYycgc3Ryb2tlPSdub25lJyBvcGFjaXR5PScwLjU1Jy8+PC9nPjwvc3ZnPg==" },
 ];
 let galleryIndex = 0;
 let galleryLayer = 'A'; // which full-page layer is currently the visible/active one
@@ -5230,29 +5222,25 @@ const bgPhotoFullA = document.getElementById('bgPhotoFullA');
 const bgPhotoFullB = document.getElementById('bgPhotoFullB');
 
 function showGalleryPhoto(index){
-  const item = GALLERY_PHOTOS[index];
+  const item = GALLERY_PATTERNS[index];
   const showing = galleryLayer === 'A' ? bgPhotoFullA : bgPhotoFullB;
   const hidden  = galleryLayer === 'A' ? bgPhotoFullB : bgPhotoFullA;
 
-  const preload = new Image();
-  preload.onload = ()=>{
-    hidden.style.backgroundImage = `url("${item.url}")`;
-    hidden.classList.add('active');
-    showing.classList.remove('active');
-    galleryLayer = galleryLayer === 'A' ? 'B' : 'A';
-    sceneCaption.textContent = item.caption;
-    sceneCredit.textContent = item.credit;
-  };
-  preload.onerror = ()=>{
-    sceneCredit.textContent = "Photo unavailable — showing default background";
-  };
-  preload.src = item.url;
+  // data-URI patterns are already in memory (no network fetch), so they can
+  // be applied immediately — no preloading or failure handling needed.
+  hidden.style.backgroundImage = `url("${item.data}")`;
+  hidden.style.backgroundSize = item.tile + 'px ' + item.tile + 'px';
+  hidden.classList.add('active');
+  showing.classList.remove('active');
+  galleryLayer = galleryLayer === 'A' ? 'B' : 'A';
+  sceneCaption.textContent = item.name;
+  sceneCredit.textContent = "Woordkracht pattern";
 }
 function startGallery(){
   showGalleryPhoto(galleryIndex);
   setInterval(()=>{
-    if(document.hidden) return; // tab not visible — don't fetch/decode a new photo for nothing
-    galleryIndex = (galleryIndex + 1) % GALLERY_PHOTOS.length;
+    if(document.hidden) return;
+    galleryIndex = (galleryIndex + 1) % GALLERY_PATTERNS.length;
     showGalleryPhoto(galleryIndex);
   }, 15000);
 }
