@@ -776,6 +776,67 @@ body.light-mode .grammar-topic-card{
 .write-input:focus{ outline:none; border-color: var(--teal); }
 .write-input.correct{ border-color:#4caf72; background: rgba(76,175,114,0.12); }
 .write-input.incorrect{ border-color:#d1584c; background: rgba(209,88,76,0.12); }
+.essay-textarea{
+  width:100%;
+  resize:vertical;
+  font-family:'Inter', system-ui, sans-serif;
+  line-height:1.5;
+}
+.essay-word-count{
+  text-align:right;
+  font-family:'JetBrains Mono', ui-monospace, monospace;
+  font-size:11.5px;
+  color:#9aa8c2;
+  margin-top:6px;
+}
+.essay-word-count.good{ color:#4caf72; font-weight:700; }
+.essay-results{ margin-top:8px; }
+.essay-feedback-card{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:8px;
+}
+.essay-feedback-card.mistake{ border-left:3px solid #e5533d; }
+.essay-feedback-card.upgrade{ border-left:3px solid #e8b64c; }
+.essay-feedback-icon{ font-size:16px; flex-shrink:0; line-height:1.3; }
+.essay-feedback-orig{
+  font-family:'Fredoka', 'Trebuchet MS', sans-serif;
+  font-weight:600;
+  font-size:14px;
+  color: var(--cream);
+  text-decoration: line-through;
+  text-decoration-color: rgba(229,83,61,0.6);
+}
+.essay-feedback-card.upgrade .essay-feedback-orig{ text-decoration:none; }
+.essay-feedback-fix{
+  font-family:'Inter', system-ui, sans-serif;
+  font-weight:600;
+  font-size:13.5px;
+  color:#4caf72;
+  margin-top:2px;
+}
+.essay-feedback-explain{
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:12px;
+  color:#b7c4d9;
+  margin-top:4px;
+}
+.essay-feedback-empty{
+  text-align:center;
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:13px;
+  color:#4caf72;
+  padding:10px;
+}
+body.light-mode .essay-word-count{ color:#7a6248; }
+body.light-mode .essay-feedback-card{ background: rgba(255,250,240,0.7); border-color: rgba(36,26,18,0.2); }
+body.light-mode .essay-feedback-orig{ color:#241a12; }
+body.light-mode .essay-feedback-explain{ color:#5a4634; }
 .write-submit-btn{
   font-family:'Inter', system-ui, sans-serif;
   font-weight:600;
@@ -2021,6 +2082,7 @@ body.light-mode .reminder-text{ color:#4a3a28; }
   </div>
 
   <div class="quiz-screen" id="writeScreen">
+    <div class="levels" id="writeModeToggle"></div>
     <div class="levels" id="writeLevels"></div>
     <div id="writeBody"></div>
   </div>
@@ -4552,6 +4614,24 @@ const STRINGS = {
   matchModeOpposites: { en:"Opposites", nl:"Tegenstellingen", tr:"Zıt Anlamlar", ar:"الأضداد" },
   matchModeSynonyms: { en:"Synonyms", nl:"Synoniemen", tr:"Eş Anlamlar", ar:"المرادفات" },
   writeInstruction: { en:"How do you say this in Dutch?", nl:"Hoe zeg je dit in het Nederlands?", tr:"Bunu Hollandaca nasıl söylersin?", ar:"كيف تقول هذا بالهولندية؟" },
+  writeModeVocab: { en:"Words", nl:"Woorden", tr:"Kelimeler", ar:"كلمات" },
+  writeModeEssay: { en:"B2 Essay", nl:"B2 Opstel", tr:"B2 Kompozisyon", ar:"مقال B2" },
+  essayPromptLabel: { en:"Write 100–150 words about:", nl:"Schrijf 100–150 woorden over:", tr:"Şu konuda 100-150 kelime yaz:", ar:"اكتب 100-150 كلمة حول:" },
+  essayNewPrompt: { en:"New topic", nl:"Ander onderwerp", tr:"Başka bir konu", ar:"موضوع آخر" },
+  essayPlaceholder: { en:"Write your Dutch text here…", nl:"Schrijf hier je Nederlandse tekst…", tr:"Hollandaca metnini buraya yaz…", ar:"اكتب نصك بالهولندية هنا…" },
+  essayWords: { en:"words", nl:"woorden", tr:"kelime", ar:"كلمة" },
+  essaySubmit: { en:"Get AI feedback", nl:"Krijg AI-feedback", tr:"Yapay Zeka Geri Bildirimi Al", ar:"احصل على تقييم الذكاء الاصطناعي" },
+  essayGrading: { en:"Grading…", nl:"Bezig met beoordelen…", tr:"Değerlendiriliyor…", ar:"جارٍ التقييم…" },
+  essayTooShort: { en:"Write a bit more before submitting (at least a few sentences).", nl:"Schrijf iets meer voordat je het inlevert (minstens een paar zinnen).", tr:"Göndermeden önce biraz daha yaz (en az birkaç cümle).", ar:"اكتب أكثر قليلاً قبل الإرسال (على الأقل بضع جمل)." },
+  essayError: { en:"Couldn't grade this right now. Check your connection and try again.", nl:"Kon dit nu niet beoordelen. Controleer je verbinding en probeer opnieuw.", tr:"Şu anda değerlendirilemedi. Bağlantını kontrol edip tekrar dene.", ar:"تعذر التقييم الآن. تحقق من اتصالك وحاول مرة أخرى." },
+  essayScoreGrammar: { en:"Grammar", nl:"Grammatica", tr:"Dilbilgisi", ar:"القواعد" },
+  essayScoreVocab: { en:"Vocabulary", nl:"Woordenschat", tr:"Kelime Bilgisi", ar:"المفردات" },
+  essayScoreStructure: { en:"Structure", nl:"Structuur", tr:"Yapı", ar:"البنية" },
+  essayScoresTitle: { en:"Your scores", nl:"Jouw scores", tr:"Puanların", ar:"درجاتك" },
+  essayMistakesTitle: { en:"Grammar mistakes", nl:"Grammaticafouten", tr:"Dilbilgisi Hataları", ar:"أخطاء نحوية" },
+  essayUpgradesTitle: { en:"Vocabulary upgrades", nl:"Woordenschat-upgrades", tr:"Kelime Bilgisi Yükseltmeleri", ar:"تطوير المفردات" },
+  essayNoMistakes: { en:"No grammar mistakes found!", nl:"Geen grammaticafouten gevonden!", tr:"Dilbilgisi hatası bulunamadı!", ar:"لم يتم العثور على أخطاء نحوية!" },
+  essayVocabStrong: { en:"Your vocabulary is already strong here!", nl:"Je woordenschat is hier al sterk!", tr:"Kelime bilginiz burada zaten güçlü!", ar:"مفرداتك قوية بالفعل هنا!" },
   writePlaceholder: { en:"Type the Dutch word…", nl:"Typ het Nederlandse woord…", tr:"Hollandaca kelimeyi yaz…", ar:"اكتب الكلمة الهولندية…" },
   writeCheck:    { en:"Check", nl:"Controleer", tr:"Kontrol et", ar:"تحقق" },
   writeCorrect:  { en:"Correct!", nl:"Correct!", tr:"Doğru!", ar:"صحيح!" },
@@ -4681,7 +4761,10 @@ function setLanguage(lang){
   render();
   updateStats();
   if(quizScreen.classList.contains('active')) startQuiz(quizDifficulty);
-  if(writeScreen.classList.contains('active')) startWrite(writeDifficulty);
+  if(writeScreen.classList.contains('active')){
+    renderWriteModeToggle();
+    if(writeMode === 'essay') renderEssayPromptUI(); else startWrite(writeDifficulty);
+  }
   if(oppositesScreen.classList.contains('active')){ renderMatchModeToggle(); startOpposites(); }
   if(grammarScreen.classList.contains('active')){
     if(document.getElementById('grammarOptions')){
@@ -5412,7 +5495,9 @@ tabWrite.onclick = ()=>{
   deactivateAllTabs();
   tabWrite.classList.add('active');
   writeScreen.classList.add('active');
-  startWrite(writeDifficulty);
+  renderWriteModeToggle();
+  writeLevelsWrap.style.display = writeMode === 'essay' ? 'none' : '';
+  if(writeMode === 'essay') startEssayMode(); else startWrite(writeDifficulty);
   updateBackgroundTheme();
 };
 tabSearch.onclick = ()=>{
@@ -5560,9 +5645,36 @@ function renderQuizResult(){
 }
 
 /* ---------- writing practice ----------
-   Shows the meaning, the user types the Dutch word from memory (active recall,
-   much stronger than multiple choice). Accents are ignored when checking
-   (fiets vs fiets, café vs cafe) but any real letter mistake counts as wrong. */
+   Two sub-modes under one tab:
+   1. Vocabulary write: shows the meaning, the user types the Dutch word from
+      memory (active recall, much stronger than multiple choice). Accents are
+      ignored when checking (fiets vs fiets, café vs cafe) but any real letter
+      mistake counts as wrong.
+   2. B2 essay: the user writes a short paragraph in response to an NT2-style
+      prompt, and an AI grader (proxied server-side) returns scores and
+      concrete, actionable feedback. */
+let writeMode = 'vocab'; // 'vocab' | 'essay'
+
+function renderWriteModeToggle(){
+  const wrap = document.getElementById('writeModeToggle');
+  wrap.innerHTML = `
+    <button class="level-btn${writeMode==='vocab'?' active':''}" id="writeModeVocabBtn">${t('writeModeVocab')}</button>
+    <button class="level-btn${writeMode==='essay'?' active':''}" id="writeModeEssayBtn">${t('writeModeEssay')}</button>
+  `;
+  document.getElementById('writeModeVocabBtn').onclick = ()=>{
+    writeMode = 'vocab';
+    renderWriteModeToggle();
+    writeLevelsWrap.style.display = '';
+    startWrite(writeDifficulty);
+  };
+  document.getElementById('writeModeEssayBtn').onclick = ()=>{
+    writeMode = 'essay';
+    renderWriteModeToggle();
+    writeLevelsWrap.style.display = 'none';
+    startEssayMode();
+  };
+}
+
 const writeLevelsWrap = document.getElementById('writeLevels');
 const writeBody = document.getElementById('writeBody');
 let writeDifficulty = "mixed";
@@ -5680,6 +5792,153 @@ function renderWriteResult(){
   `;
   document.getElementById('writeAgain').onclick = ()=> startWrite(writeDifficulty);
   document.getElementById('writeBack').onclick = ()=> tabCards.click();
+}
+
+/* ---------- B2 essay writing mode ----------
+   The user writes roughly 100-150 words of Dutch in response to an NT2-style
+   prompt. The text is sent to a server-side function (api/writing-feedback.js)
+   which asks Claude to grade it and return structured feedback: three 0-100
+   scores, a short list of concrete grammar mistakes, and basic-word-to-B2
+   vocabulary upgrades. The Anthropic API key never touches the browser. */
+const ESSAY_PROMPTS = [
+  "Moeten jongeren verplicht vrijwilligerswerk doen?",
+  "Is het beter om in de stad of op het platteland te wonen?",
+  "Zouden mensen minder vlees moeten eten voor het milieu?",
+  "Is sociale media goed of slecht voor tieners?",
+  "Moet iedereen een tweede taal leren op school?",
+  "Is thuiswerken beter dan op kantoor werken?",
+  "Moeten scholen meer aandacht besteden aan digitale vaardigheden?",
+  "Is het minimumloon in Nederland hoog genoeg?",
+  "Zou het openbaar vervoer gratis moeten zijn?",
+  "Is het belangrijk om de geschiedenis van je land te kennen?",
+  "Moeten ouders de schermtijd van hun kinderen beperken?",
+  "Is het eerlijk dat sommige beroepen veel meer verdienen dan andere?",
+  "Zouden gemeenten meer moeten doen om eenzaamheid onder ouderen te bestrijden?",
+  "Is het nodig om als volwassene je hele leven te blijven leren?",
+  "Moet iedereen verplicht stemmen bij verkiezingen?"
+];
+let currentEssayPrompt = null;
+
+function startEssayMode(){
+  if(!isPremium){ showUpgradePrompt(); }
+  currentEssayPrompt = ESSAY_PROMPTS[Math.floor(Math.random()*ESSAY_PROMPTS.length)];
+  renderEssayPromptUI();
+}
+
+function renderEssayPromptUI(){
+  writeBody.innerHTML = `
+    <div class="quiz-card" style="margin-bottom:16px;">
+      <div class="quiz-cat">B2 · ${t('essayPromptLabel')}</div>
+      <div class="grammar-question" style="font-size:17px;">${currentEssayPrompt}</div>
+    </div>
+    <button class="grammar-back-btn" id="essayNewPromptBtn">🔄 ${t('essayNewPrompt')}</button>
+    <textarea id="essayInput" class="write-input essay-textarea" rows="7" placeholder="${t('essayPlaceholder')}"></textarea>
+    <div class="essay-word-count" id="essayWordCount">0 ${t('essayWords')}</div>
+    <button class="quiz-restart" id="essaySubmitBtn" style="width:100%; margin-top:10px;">${t('essaySubmit')}</button>
+    <div id="essayFeedbackArea"></div>
+  `;
+  document.getElementById('essayNewPromptBtn').onclick = startEssayMode;
+  const textarea = document.getElementById('essayInput');
+  const wordCountEl = document.getElementById('essayWordCount');
+  textarea.addEventListener('input', ()=>{
+    const words = textarea.value.trim().split(/\s+/).filter(Boolean).length;
+    wordCountEl.textContent = words + ' ' + t('essayWords');
+    wordCountEl.classList.toggle('good', words >= 80 && words <= 180);
+  });
+  document.getElementById('essaySubmitBtn').onclick = submitEssayForFeedback;
+}
+
+async function submitEssayForFeedback(){
+  if(!isPremium){ showUpgradePrompt(); return; }
+  const textarea = document.getElementById('essayInput');
+  const text = textarea.value.trim();
+  if(text.length < 20){
+    document.getElementById('essayFeedbackArea').innerHTML =
+      '<div class="ai-error">' + t('essayTooShort') + '</div>';
+    return;
+  }
+  const btn = document.getElementById('essaySubmitBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ ' + t('essayGrading');
+  document.getElementById('essayFeedbackArea').innerHTML = '';
+
+  try{
+    const response = await fetch('/api/writing-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: currentEssayPrompt, text })
+    });
+    if(!response.ok) throw new Error('Request failed: ' + response.status);
+    const feedback = await response.json();
+    renderEssayResults(feedback);
+    recordActivityToday();
+  }catch(err){
+    console.error('Essay feedback error:', err);
+    document.getElementById('essayFeedbackArea').innerHTML =
+      '<div class="ai-error">' + t('essayError') + '</div>';
+  }finally{
+    btn.disabled = false;
+    btn.textContent = t('essaySubmit');
+  }
+}
+
+function scoreColor(pct){
+  if(pct >= 80) return '#4caf72';
+  if(pct >= 60) return '#e8b64c';
+  return '#e5533d';
+}
+
+function renderEssayResults(feedback){
+  const scores = [
+    { label: t('essayScoreGrammar'), value: feedback.grammarScore },
+    { label: t('essayScoreVocab'), value: feedback.vocabularyScore },
+    { label: t('essayScoreStructure'), value: feedback.structureScore },
+  ];
+  const scoresHtml = scores.map(function(s){
+    return '<div class="level-bar-row">' +
+      '<span class="conf-bar-label" style="width:110px;">' + s.label + '</span>' +
+      '<div class="level-bar-track"><div class="level-bar-fill" style="width:' + s.value + '%; background:' + scoreColor(s.value) + '"></div></div>' +
+      '<span class="level-bar-pct">' + s.value + '%</span>' +
+    '</div>';
+  }).join('');
+
+  const mistakesHtml = (feedback.mistakes && feedback.mistakes.length)
+    ? feedback.mistakes.map(function(m){
+        return '<div class="essay-feedback-card mistake">' +
+          '<div class="essay-feedback-icon">🔴</div>' +
+          '<div>' +
+            '<div class="essay-feedback-orig">' + escapeHtml(m.original) + '</div>' +
+            '<div class="essay-feedback-fix">→ ' + escapeHtml(m.correction) + '</div>' +
+            '<div class="essay-feedback-explain">' + escapeHtml(m.explanation) + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('')
+    : '<div class="essay-feedback-empty">✅ ' + t('essayNoMistakes') + '</div>';
+
+  const upgradesHtml = (feedback.vocabUpgrades && feedback.vocabUpgrades.length)
+    ? feedback.vocabUpgrades.map(function(u){
+        return '<div class="essay-feedback-card upgrade">' +
+          '<div class="essay-feedback-icon">🟡</div>' +
+          '<div>' +
+            '<div class="essay-feedback-orig">' + escapeHtml(u.basic) + '</div>' +
+            '<div class="essay-feedback-fix">→ ' + u.alternatives.map(escapeHtml).join(' / ') + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('')
+    : '<div class="essay-feedback-empty">✅ ' + t('essayVocabStrong') + '</div>';
+
+  document.getElementById('essayFeedbackArea').innerHTML =
+    '<div class="essay-results">' +
+      '<div class="progress-section-title">' + t('essayScoresTitle') + '</div>' +
+      '<div class="level-bars">' + scoresHtml + '</div>' +
+      '<p class="grammar-explain-text" style="margin:12px 0; color:var(--cream);">' + escapeHtml(feedback.overallFeedback || '') + '</p>' +
+      '<div class="progress-section-title">' + t('essayMistakesTitle') + ' (' + (feedback.mistakes ? feedback.mistakes.length : 0) + ')</div>' +
+      mistakesHtml +
+      '<div class="progress-section-title">' + t('essayUpgradesTitle') + '</div>' +
+      upgradesHtml +
+      '<button class="quiz-restart" id="essayTryAnotherBtn" style="width:100%; margin-top:14px;">' + t('essayNewPrompt') + '</button>' +
+    '</div>';
+  document.getElementById('essayTryAnotherBtn').onclick = startEssayMode;
 }
 
 /* ---------- opposites & synonyms (word-matching) mode ----------
