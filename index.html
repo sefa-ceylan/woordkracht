@@ -432,7 +432,7 @@ body.light-mode .mode-tab:hover:not(.active){
   border:2px solid rgba(36,26,18,0.32);
   background: rgba(255,255,255,0.5);
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  font-size:14px;
+  font-size:17px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -503,9 +503,9 @@ body.light-mode .mode-tab:hover:not(.active){
 .conf-btn:hover{ background: var(--c); }
 .conf-btn:hover .lbl{ color: var(--ink); }
 .conf-btn:active{ transform:scale(0.94); }
-.conf-btn .dot{
-  width:16px; height:16px; border-radius:50%;
-  background: var(--c);
+.conf-btn .conf-emoji{
+  font-size:20px;
+  line-height:1;
 }
 .conf-btn .lbl{
   font-family:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -4697,16 +4697,14 @@ const STRINGS = {
   diffMedium:    { en:"Medium", nl:"Gemiddeld", tr:"Orta", ar:"متوسط" },
   diffHard:      { en:"Hard", nl:"Moeilijk", tr:"Zor", ar:"صعب" },
   diffMixed:     { en:"Mixed", nl:"Gemengd", tr:"Karışık", ar:"متنوع" },
-  confNone:      { en:"None", nl:"Geen", tr:"Hiç", ar:"لا شيء" },
+  confNone:      { en:"Don't know", nl:"Weet niet", tr:"Bilmiyorum", ar:"لا أعرف" },
   confNoneTitle: { en:"Don't know it at all", nl:"Ken ik helemaal niet", tr:"Hiç bilmiyorum", ar:"لا أعرفها إطلاقًا" },
-  confLittle:    { en:"A little", nl:"Beetje", tr:"Biraz", ar:"قليلاً" },
-  confLittleTitle:{ en:"Know a little", nl:"Ken ik een beetje", tr:"Biraz biliyorum", ar:"أعرف القليل" },
-  confRecog:     { en:"Recognize", nl:"Herken", tr:"Tanırım", ar:"أتعرّف عليها" },
-  confRecogTitle:{ en:"I recognize it", nl:"Ik herken het", tr:"Onu tanıyorum", ar:"أتعرّف عليها" },
-  confUse:       { en:"Can use", nl:"Kan gebruiken", tr:"Kullanabilirim", ar:"أستطيع استخدامها" },
-  confUseTitle:  { en:"I can use it", nl:"Ik kan het gebruiken", tr:"Onu kullanabilirim", ar:"أستطيع استخدامها" },
-  confActive:    { en:"Active", nl:"Actief", tr:"Aktif", ar:"نشِط" },
-  confActiveTitle:{ en:"I actively use it", nl:"Ik gebruik het actief", tr:"Onu aktif olarak kullanıyorum", ar:"أستخدمها بنشاط" },
+  confLittle:    { en:"Struggled", nl:"Moeite", tr:"Zorlandım", ar:"واجهت صعوبة" },
+  confLittleTitle:{ en:"Found it hard to recall", nl:"Moeite met onthouden", tr:"Hatırlamakta zorlandım", ar:"وجدت صعوبة في التذكر" },
+  confRecog:     { en:"Know it", nl:"Ken het", tr:"Biliyorum", ar:"أعرفها" },
+  confRecogTitle:{ en:"I know this word", nl:"Ik ken dit woord", tr:"Bu kelimeyi biliyorum", ar:"أعرف هذه الكلمة" },
+  confUse:       { en:"Mastered", nl:"Beheerst", tr:"Çok iyi", ar:"أتقنتها" },
+  confUseTitle:  { en:"I know this really well", nl:"Ik ken dit heel goed", tr:"Bunu çok iyi biliyorum", ar:"أعرفها جيداً جداً" },
 };
 function t(key){ return (STRINGS[key] && STRINGS[key][currentLang]) || key; }
 
@@ -4800,14 +4798,13 @@ let currentType = "ALL";
 let dueOnly = false;
 let pool = [...VOCAB];
 let idx = 0;
-let confidenceMap = {}; // { [wordId]: { level: 0-4, dueAt: <ms timestamp> } }
+let confidenceMap = {}; // { [wordId]: { level: 0-3, dueAt: <ms timestamp>, interval, ease, reps } }
 
 const CONFIDENCE_LEVELS = [
-  { level:0, dot:"#e5533d", lblKey:"confNone",   titleKey:"confNoneTitle",   days:0   },
-  { level:1, dot:"#ed8936", lblKey:"confLittle", titleKey:"confLittleTitle", days:1   },
-  { level:2, dot:"#d4a017", lblKey:"confRecog",  titleKey:"confRecogTitle",  days:3   },
-  { level:3, dot:"#48bb78", lblKey:"confUse",    titleKey:"confUseTitle",    days:7   },
-  { level:4, dot:"#4299e1", lblKey:"confActive", titleKey:"confActiveTitle",days:21  },
+  { level:0, emoji:"😵", dot:"#e5533d", lblKey:"confNone",   titleKey:"confNoneTitle",   baseDays:10/1440 }, // 10 minutes
+  { level:1, emoji:"😕", dot:"#ed8936", lblKey:"confLittle", titleKey:"confLittleTitle", baseDays:1 },
+  { level:2, emoji:"🙂", dot:"#48bb78", lblKey:"confRecog",  titleKey:"confRecogTitle",  baseDays:3 },
+  { level:3, emoji:"😎", dot:"#4299e1", lblKey:"confUse",    titleKey:"confUseTitle",    baseDays:14 },
 ];
 
 const card = document.getElementById('card');
@@ -5120,16 +5117,51 @@ function buildConfidenceRow(){
     b.style.setProperty('--c', c.dot);
     b.style.setProperty('--c-soft', c.dot + '29'); // ~16% alpha hex suffix
     b.title = t(c.titleKey);
-    b.innerHTML = '<span class="dot"></span><span class="lbl">' + t(c.lblKey) + '</span>';
+    b.innerHTML = '<span class="conf-emoji">' + c.emoji + '</span><span class="lbl">' + t(c.lblKey) + '</span>';
     b.onclick = ()=> rateCurrentWord(c.level);
     confidenceRow.appendChild(b);
   });
 }
-function rateCurrentWord(level){
+
+/* ---------- adaptive spaced repetition (SM-2 inspired) ----------
+   Each word tracks an ease factor and a repetition streak, not just a fixed
+   gap. Rating a word 🙂/😎 repeatedly makes the interval grow faster each
+   time (real SRS behavior); rating 😵/😕 resets the streak and pulls the
+   next review back in close, so the algorithm adapts to actual performance
+   rather than repeating the same fixed schedule every time.
+   Records saved by the previous fixed-interval version simply lack
+   ease/reps/interval — those default to a fresh start below, so old
+   progress keeps working without a separate migration step. */
+function computeNextReview(existingRecord, ratingLevel){
+  const ease = (existingRecord && typeof existingRecord.ease === 'number') ? existingRecord.ease : 2.5;
+  const reps = (existingRecord && typeof existingRecord.reps === 'number') ? existingRecord.reps : 0;
+  const prevInterval = (existingRecord && typeof existingRecord.interval === 'number') ? existingRecord.interval : 0;
+  const base = CONFIDENCE_LEVELS[ratingLevel].baseDays;
+
+  let interval, newEase = ease, newReps = reps;
+  if(ratingLevel <= 1){
+    // 😵 or 😕 — reset the streak; ease dips slightly so future growth is more cautious
+    newReps = 0;
+    interval = base;
+    newEase = Math.max(1.3, ease - (ratingLevel === 0 ? 0.2 : 0.15));
+  } else {
+    newReps = reps + 1;
+    if(newReps === 1 || prevInterval <= 0){
+      interval = base; // first successful review of this word uses the base interval
+    } else {
+      const bonus = ratingLevel === 3 ? 1.3 : 1.0; // 😎 grows the gap faster than 🙂
+      interval = prevInterval * ease * bonus;
+    }
+    if(ratingLevel === 3) newEase = Math.min(3.0, ease + 0.15);
+  }
+  return { interval, ease: newEase, reps: newReps };
+}
+
+function rateCurrentWord(ratingLevel){
   if(pool.length === 0) return;
   const w = pool[idx];
-  const days = CONFIDENCE_LEVELS[level].days;
-  confidenceMap[w.id] = { level, dueAt: Date.now() + days*86400000 };
+  const { interval, ease, reps } = computeNextReview(confidenceMap[w.id], ratingLevel);
+  confidenceMap[w.id] = { level: ratingLevel, dueAt: Date.now() + interval*86400000, interval, ease, reps };
   saveConfidence();
   updateStats();
   recordActivityToday();
@@ -5297,8 +5329,8 @@ function render(){
   CONFIDENCE_LEVELS.forEach(c=> document.getElementById('conf-'+c.level)?.classList.remove('selected'));
   if(rec){
     const c = CONFIDENCE_LEVELS[rec.level];
-    confidencePip.textContent = "";
-    confidencePip.style.background = c.dot;
+    confidencePip.textContent = c.emoji;
+    confidencePip.style.background = c.dot + '22';
     confidencePip.style.borderColor = c.dot;
     document.getElementById('conf-'+rec.level)?.classList.add('selected');
   } else {
@@ -5756,12 +5788,10 @@ function renderWriteQuestion(){
 }
 
 function applyWriteConfidenceResult(wordId, correct){
-  const current = confidenceMap[wordId] ? confidenceMap[wordId].level : -1;
-  const newLevel = correct
-    ? Math.min(current + 1, CONFIDENCE_LEVELS.length - 1)
-    : Math.max(current - 1, 0);
-  const days = CONFIDENCE_LEVELS[newLevel].days;
-  confidenceMap[wordId] = { level: newLevel, dueAt: Date.now() + days*86400000 };
+  // correct → 🙂 "know it", incorrect → 😵 "don't know" (surfaces again very soon)
+  const ratingLevel = correct ? 2 : 0;
+  const { interval, ease, reps } = computeNextReview(confidenceMap[wordId], ratingLevel);
+  confidenceMap[wordId] = { level: ratingLevel, dueAt: Date.now() + interval*86400000, interval, ease, reps };
   saveConfidence();
   updateStats();
 }
@@ -6560,14 +6590,14 @@ function renderProgress(){
 
   const ratedIds = Object.keys(confidenceMap);
   const totalRated = ratedIds.length;
-  const mastered = ratedIds.filter(id => confidenceMap[id].level >= 3).length;
+  const mastered = ratedIds.filter(id => confidenceMap[id].level >= 2).length;
   document.getElementById('progressSummary').innerHTML = `
     <div class="summary-chip"><div class="summary-num">${totalRated}</div><div class="summary-label">${t('summaryRated')}</div></div>
     <div class="summary-chip"><div class="summary-num">${mastered}</div><div class="summary-label">${t('summaryMastered')}</div></div>
     <div class="summary-chip"><div class="summary-num">${streakData.longestStreak || 0}</div><div class="summary-label">${t('summaryBest')}</div></div>
   `;
 
-  const counts = [0,0,0,0,0];
+  const counts = [0,0,0,0];
   Object.values(confidenceMap).forEach(r=> counts[r.level]++);
   document.getElementById('confBars').innerHTML = CONFIDENCE_LEVELS.map((c,i)=>{
     const pct = totalRated ? Math.round((counts[i]/totalRated)*100) : 0;
@@ -6582,7 +6612,7 @@ function renderProgress(){
 
   document.getElementById('levelBars').innerHTML = LEVELS.filter(l=>l!=="ALL").map(lv=>{
     const wordsInLevel = VOCAB.filter(w=>w.level===lv);
-    const masteredInLevel = wordsInLevel.filter(w => confidenceMap[w.id] && confidenceMap[w.id].level >= 3).length;
+    const masteredInLevel = wordsInLevel.filter(w => confidenceMap[w.id] && confidenceMap[w.id].level >= 2).length;
     const pct = wordsInLevel.length ? Math.round((masteredInLevel/wordsInLevel.length)*100) : 0;
     return `
       <div class="level-bar-row">
