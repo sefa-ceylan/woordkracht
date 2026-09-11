@@ -19,11 +19,12 @@ module.exports = async (req, res) => {
     return;
   }
 
-  let prompt, text;
+  let prompt, text, level;
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
     prompt = typeof body.prompt === 'string' ? body.prompt.trim() : '';
     text = typeof body.text === 'string' ? body.text.trim() : '';
+    level = (body.level === 'B1') ? 'B1' : 'B2';
   } catch (e) {
     res.status(400).json({ error: 'Invalid request body' });
     return;
@@ -42,7 +43,7 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const evalPrompt = `You are a strict but encouraging Dutch (NT2) writing examiner grading at CEFR level B2. The essay prompt given to the student was:
+  const evalPrompt = `You are a strict but encouraging Dutch (NT2) writing examiner grading at CEFR level ${level}. The essay prompt given to the student was:
 "${prompt}"
 
 The student wrote the following Dutch text in response:
@@ -66,8 +67,8 @@ Evaluate it and respond with ONLY raw JSON, no markdown, no code fences, no expl
 
 Rules:
 - List at most 5 items in "mistakes", prioritizing the most important errors. If there are no grammar mistakes, return an empty array.
-- List at most 5 items in "vocabUpgrades", focusing on basic/overused words (like goed, leuk, veel, dingen) that a B2 writer should vary. If vocabulary is already strong, return an empty array.
-- Be realistic: a genuinely strong B2-level text should score in the 80s-90s; a text with frequent errors should score much lower. Do not inflate scores.
+- List at most 5 items in "vocabUpgrades", focusing on basic/overused words (like goed, leuk, veel, dingen) that a ${level} writer should vary. If vocabulary is already strong, return an empty array.
+- Be realistic: a genuinely strong ${level}-level text should score in the 80s-90s; a text with frequent errors should score much lower. Do not inflate scores.
 - All explanations and feedback text must be in Dutch, written simply enough for a B2 learner to understand.`;
 
   try {

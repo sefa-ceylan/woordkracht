@@ -561,6 +561,43 @@ body.light-mode .mode-tab:hover:not(.active){
 .quiz-ipa{
   display:none;
 }
+.quiz-sentence{
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:18px;
+  font-weight:600;
+  line-height:1.5;
+  color: var(--ink);
+}
+.quiz-confuse-tip{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  background: rgba(232,182,76,0.15);
+  border:1px solid rgba(232,182,76,0.4);
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:12.5px;
+  color: var(--cream);
+  line-height:1.6;
+}
+.quiz-explain-panel{
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:14px;
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+}
+.quiz-explain-row{
+  font-family:'Inter', system-ui, sans-serif;
+  font-size:13.5px;
+  color: var(--cream);
+  margin-bottom:6px;
+  line-height:1.5;
+}
+.quiz-explain-row.wrong b{ color:#e5533d; }
+.quiz-explain-row.correct b{ color:#4caf72; }
+body.light-mode .quiz-explain-panel{ background: rgba(255,250,240,0.7); border-color: rgba(36,26,18,0.2); }
+body.light-mode .quiz-explain-row{ color:#241a12; }
+body.light-mode .quiz-confuse-tip{ color:#3a2c1c; }
 .quiz-options{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -2196,6 +2233,17 @@ body.light-mode .reminder-text{ color:#4a3a28; }
 
   <div class="quiz-screen" id="nt2Screen">
     <button class="grammar-back-btn" id="nt2BackBtn">← <span data-i18n="tabCardsShort">Cards</span></button>
+    <div class="exam-card" id="examCard">
+      <div class="exam-header">
+        <span class="exam-icon">🎓</span>
+        <span class="exam-title">NT2 Staatsexamen</span>
+      </div>
+      <div id="examBody"></div>
+      <div class="exam-links">
+        <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-i" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleI">Rooster Programma I (B1)</a>
+        <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-ii" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleII">Rooster Programma II (B2)</a>
+      </div>
+    </div>
     <div id="nt2Body"></div>
   </div>
 
@@ -2262,18 +2310,6 @@ body.light-mode .reminder-text{ color:#4a3a28; }
   </div>
 
   <div class="progress-screen" id="resourcesScreen">
-    <div class="exam-card" id="examCard">
-      <div class="exam-header">
-        <span class="exam-icon">🎓</span>
-        <span class="exam-title">NT2 Staatsexamen</span>
-      </div>
-      <div id="examBody"></div>
-      <div class="exam-links">
-        <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-i" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleI">Rooster Programma I (B1)</a>
-        <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-ii" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleII">Rooster Programma II (B2)</a>
-      </div>
-    </div>
-
     <div class="resources-footer">
       <div class="resources-card news">
         <div class="resources-header">
@@ -4666,6 +4702,9 @@ const VOCAB = [
 {nl:"cloudopslag", en:"cloud storage", tr:"bulut depolama", ar:"تخزين سحابي", ipa:"[KLOWD-op-slakh]", level:"B2", cat:"noun"},
 {nl:"gegevensbescherming", en:"data protection", tr:"veri koruma", ar:"حماية البيانات", ipa:"[khuh-KHAY-vens-buh-skher-ming]", level:"B2", cat:"noun"},
 {nl:"privacy-instellingen", en:"privacy settings", tr:"gizlilik ayarları", ar:"إعدادات الخصوصية", ipa:"[PRY-vuh-see-in-stel-ling-en]", level:"B2", cat:"noun"},
+{nl:"mits", en:"provided that", tr:"şartıyla", ar:"بشرط أن", ipa:"[mits]", level:"B2", cat:"connector"},
+{nl:"tenzij", en:"unless", tr:"aksi takdirde, meğer ki", ar:"إلا إذا", ipa:"[ten-ZAY]", level:"B2", cat:"connector"},
+{nl:"aansprakelijk", en:"liable / responsible (legal)", tr:"sorumlu (hukuki)", ar:"مسؤول (قانونياً)", ipa:"[AHN-sprah-kuh-luk]", level:"B2", cat:"adjective"},
 ];
 
 /* ---------- i18n: NL / ENG only, no other languages ---------- */
@@ -4830,6 +4869,14 @@ const STRINGS = {
   nt2cat_wonen:  { en:"Housing", nl:"Wonen", tr:"Barınma", ar:"السكن" },
   nt2cat_onderwijs: { en:"Education", nl:"Onderwijs", tr:"Eğitim", ar:"التعليم" },
   nt2cat_nieuws: { en:"News", nl:"Nieuws", tr:"Haberler", ar:"الأخبار" },
+  quizTypeReverse: { en:"pick the Dutch word", nl:"kies het Nederlandse woord", tr:"Hollandaca kelimeyi seç", ar:"اختر الكلمة الهولندية" },
+  quizTypeFillBlank: { en:"fill in the blank", nl:"vul het gat in", tr:"boşluğu doldur", ar:"املأ الفراغ" },
+  quizTypeSentence: { en:"which sentence is correct?", nl:"welke zin is correct?", tr:"hangi cümle doğru?", ar:"أي جملة صحيحة؟" },
+  quizDontConfuse: { en:"Don't confuse:", nl:"Niet verwarren:", tr:"Karıştırma:", ar:"لا تخلط بين:" },
+  quizYourAnswer: { en:"Your answer", nl:"Jouw antwoord", tr:"Cevabın", ar:"إجابتك" },
+  quizCorrectAnswer: { en:"Correct", nl:"Correct", tr:"Doğrusu", ar:"الصحيح" },
+  quizExplainMore: { en:"Why is this wrong?", nl:"Waarom is dit fout?", tr:"Bu neden yanlış?", ar:"لماذا هذا خطأ؟" },
+  quizContinueBtn: { en:"Next question →", nl:"Volgende vraag →", tr:"Sonraki soru →", ar:"السؤال التالي ←" },
   eyebrowSuffix: { en:"ITEMS", nl:"WOORDEN", tr:"KELİME", ar:"كلمة" },
   quizQuestion:  { en:"Question", nl:"Vraag", tr:"Soru", ar:"سؤال" },
   quizScore:     { en:"Score", nl:"Score", tr:"Skor", ar:"النتيجة" },
@@ -6116,13 +6163,53 @@ tabGrammar.onclick = ()=>{
 };
 
 /* ---------- quiz mode ---------- */
+/* ---------- quiz mode ----------
+   Six question types keep the quiz from feeling repetitive:
+   1. meaning     — Dutch word shown, pick the correct meaning (classic)
+   2. reverse     — meaning shown, pick the correct Dutch word
+   3. fillblank   — a real example sentence with the word blanked out
+   4. sentence    — pick which of several sentences uses the word correctly
+   5/6 are really the same "wrong answer" moment handled by
+   showWrongAnswerExplanation(): an automatic antonym-based "don't confuse"
+   tip when one applies, plus an optional on-demand AI explanation
+   (api/explain-answer.js) for a fuller breakdown of the mistake. */
 const quizLevelsWrap = document.getElementById('quizLevels');
 const quizBody = document.getElementById('quizBody');
 let quizDifficulty = "mixed";
-let quizPool = [];
 let quizIdx = 0;
 let quizScore = 0;
 const QUIZ_LEN = 10;
+
+// Curated pairs of one correct usage + a few plausible-but-wrong usages, for
+// the "sentence recognition" question type — especially valuable at B2/C1
+// where a word's exact register or fixed usage is the hard part, not its
+// bare dictionary meaning.
+const SENTENCE_RECOGNITION = [
+  { word:"onderschrijven", correct:"Ik onderschrijf de conclusie van het rapport volledig.",
+    wrong:["Ik onderschrijf een brief aan de gemeente.","De trein onderschrijft het station om negen uur.","Zij onderschrijft de deur voor de gasten."] },
+  { word:"rechtvaardigen", correct:"Hij probeerde zijn gedrag te rechtvaardigen met een goed excuus.",
+    wrong:["De rechter rechtvaardigt de gevangene na tien jaar.","Zij rechtvaardigt het huis met een nieuwe verflaag.","Wij rechtvaardigen de vergadering naar volgende week."] },
+  { word:"benadrukken", correct:"De minister benadrukte het belang van goed onderwijs.",
+    wrong:["Hij benadrukte de auto voor de garage.","Zij benadrukte de brief naar haar oma.","We benadrukken het eten voordat we gaan slapen."] },
+  { word:"weerleggen", correct:"De wetenschapper weerlegde de theorie met nieuw onderzoek.",
+    wrong:["Hij weerlegt zijn jas omdat het koud is.","Ze weerlegt de post naar het verkeerde adres.","Wij weerleggen de vergadering tot morgen."] },
+  { word:"bevorderen", correct:"Sporten kan een gezonde levensstijl bevorderen.",
+    wrong:["Hij bevordert de auto naar de garage.","Zij bevordert het boek terug naar de bibliotheek.","We bevorderen de deur voor de gasten."] },
+  { word:"belemmeren", correct:"De regen belemmerde het zicht op de weg.",
+    wrong:["Hij belemmert de brief met een postzegel.","Zij belemmert het eten met een vork.","We belemmeren de reis met genoeg geld."] },
+  { word:"overwegen", correct:"Ze overweegt om volgend jaar te verhuizen naar Utrecht.",
+    wrong:["Hij overweegt de tas naar zijn werk.","Zij overweegt het brood met boter.","We overwegen de deur op slot."] },
+  { word:"veronderstellen", correct:"Ik veronderstel dat hij vandaag niet komt, want hij is ziek.",
+    wrong:["Hij veronderstelt de auto in de garage.","Zij veronderstelt het eten op tafel.","We veronderstellen de brief naar de bus."] },
+  { word:"desalniettemin", correct:"Het regende hard; desalniettemin gingen ze toch wandelen.",
+    wrong:["Desalniettemin is mijn naam Peter.","Ik eet desalniettemin een appel.","Desalniettemin woont zij in Utrecht."] },
+  { word:"mits", correct:"Je mag naar het feest, mits je op tijd thuis bent.",
+    wrong:["Mits gaat hij naar school.","Zij eet mits een boterham.","Mits is het een mooie dag."] },
+  { word:"tenzij", correct:"We gaan wandelen, tenzij het hard gaat regenen.",
+    wrong:["Tenzij woont hij in Rotterdam.","Zij koopt tenzij een nieuwe fiets.","Tenzij is het al laat."] },
+  { word:"aansprakelijk", correct:"De bestuurder is aansprakelijk voor de schade aan de auto.",
+    wrong:["Deze soep is erg aansprakelijk vandaag.","Het weer is aansprakelijk voor morgen.","Zij is aansprakelijk voor haar leeftijd."] },
+];
 
 const DIFFICULTIES = [
   {k:"easy",   labelKey:"diffEasy",   sub:"A1–A2"},
@@ -6153,66 +6240,193 @@ function buildQuizLevelButtons(){
 function shuffled(arr){ return [...arr].sort(()=>Math.random()-0.5); }
 
 let quizSource = [];
+let quizQuestions = [];
 function startQuiz(difficulty){
   quizSource = poolForDifficulty(difficulty);
   const n = Math.min(QUIZ_LEN, quizSource.length);
-  quizPool = shuffled(quizSource).slice(0, n);
+  const words = shuffled(quizSource).slice(0, n);
+  quizQuestions = words.map(w=>{
+    const types = ['meaning', 'reverse'];
+    if(w.nt2) types.push('fillblank');
+    const sr = SENTENCE_RECOGNITION.find(s=> s.word === w.nl);
+    if(sr) types.push('sentence');
+    return { type: types[Math.floor(Math.random()*types.length)], word: w, sr };
+  });
   quizIdx = 0;
   quizScore = 0;
   renderQuizQuestion();
 }
 
 function renderQuizQuestion(){
-  if(quizIdx >= quizPool.length){ renderQuizResult(); return; }
-  const w = quizPool[quizIdx];
+  if(quizIdx >= quizQuestions.length){ renderQuizResult(); return; }
+  const question = quizQuestions[quizIdx];
+  const w = question.word;
   const distractorSrc = quizSource.length > 3 ? quizSource : VOCAB;
-  const wrongs = shuffled(distractorSrc.filter(x=>x.id!==w.id)).slice(0,3);
-  const options = shuffled([w, ...wrongs]);
 
-  quizBody.innerHTML = `
+  const header = `
     <div class="quiz-progress">
-      <span>${t('quizQuestion')} <b>${quizIdx+1}</b> / ${quizPool.length}</span>
+      <span>${t('quizQuestion')} <b>${quizIdx+1}</b> / ${quizQuestions.length}</span>
       <span>${t('quizScore')} <b>${quizScore}</b></span>
     </div>
-    <div class="quiz-card">
-      <div class="quiz-cat">${w.cat} · ${w.level}</div>
-      <div class="quiz-word">${w.nl}</div>
-      <div class="quiz-ipa">${w.ipa}</div>
-    </div>
-    <div class="quiz-options" id="quizOptions"></div>
   `;
 
+  if(question.type === 'meaning'){
+    const wrongs = shuffled(distractorSrc.filter(x=>x.id!==w.id)).slice(0,3);
+    const options = shuffled([w, ...wrongs]).map(o=>({ text: wordMeaning(o), isCorrect:o.id===w.id }));
+    quizBody.innerHTML = header + `
+      <div class="quiz-card">
+        <div class="quiz-cat">${w.cat} · ${w.level}</div>
+        <div class="quiz-word">${w.nl}</div>
+      </div>
+      <div class="quiz-options" id="quizOptions"></div>
+    `;
+    renderQuizOptionButtons(options, w, 'grid');
+  }
+  else if(question.type === 'reverse'){
+    const wrongs = shuffled(distractorSrc.filter(x=>x.id!==w.id)).slice(0,3);
+    const options = shuffled([w, ...wrongs]).map(o=>({ text:o.nl, isCorrect:o.id===w.id }));
+    quizBody.innerHTML = header + `
+      <div class="quiz-card">
+        <div class="quiz-cat">${w.cat} · ${w.level} · ${t('quizTypeReverse')}</div>
+        <div class="quiz-word" style="font-size:24px;">${wordMeaning(w)}</div>
+      </div>
+      <div class="quiz-options" id="quizOptions"></div>
+    `;
+    renderQuizOptionButtons(options, w, 'grid');
+  }
+  else if(question.type === 'fillblank'){
+    const re = new RegExp(w.nl.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'i');
+    const blanked = w.nt2.example.replace(re, '_____');
+    let wrongs = shuffled(distractorSrc.filter(x=>x.id!==w.id && x.cat===w.cat)).slice(0,3);
+    if(wrongs.length < 3) wrongs = shuffled(distractorSrc.filter(x=>x.id!==w.id)).slice(0,3);
+    const options = shuffled([w, ...wrongs]).map(o=>({ text:o.nl, isCorrect:o.id===w.id }));
+    quizBody.innerHTML = header + `
+      <div class="quiz-card">
+        <div class="quiz-cat">${w.level} · ${t('quizTypeFillBlank')}</div>
+        <div class="quiz-sentence">${blanked}</div>
+      </div>
+      <div class="quiz-options" id="quizOptions"></div>
+    `;
+    renderQuizOptionButtons(options, w, 'grid');
+  }
+  else if(question.type === 'sentence'){
+    const sr = question.sr;
+    const options = shuffled([
+      { text: sr.correct, isCorrect:true },
+      ...sr.wrong.map(s=>({ text:s, isCorrect:false }))
+    ]);
+    quizBody.innerHTML = header + `
+      <div class="quiz-card">
+        <div class="quiz-cat">${w.level} · ${t('quizTypeSentence')}</div>
+        <div class="quiz-word" style="font-size:22px;">${w.nl}</div>
+      </div>
+      <div class="quiz-options" id="quizOptions" style="grid-template-columns:1fr;"></div>
+    `;
+    renderQuizOptionButtons(options, w, 'list');
+  }
+}
+
+function renderQuizOptionButtons(options, correctWord, layout){
   const optWrap = document.getElementById('quizOptions');
+  if(layout === 'list') optWrap.style.gridTemplateColumns = '1fr';
   options.forEach(opt=>{
     const b = document.createElement('button');
     b.className = 'quiz-opt';
-    // shows the meaning in whatever UI language is active (EN/TR/AR)
-    b.textContent = wordMeaning(opt);
-    b.onclick = ()=> answerQuiz(opt.id === w.id, b, w.id);
+    if(layout === 'list') b.style.textAlign = 'left';
+    b.textContent = opt.text;
+    b.onclick = ()=> answerQuiz(opt.isCorrect, b, correctWord, opt.text);
     optWrap.appendChild(b);
   });
 }
 
-function answerQuiz(isCorrect, btnEl, correctId){
+function answerQuiz(isCorrect, btnEl, correctWord, wrongText){
   const buttons = document.querySelectorAll('.quiz-opt');
   buttons.forEach(b=> b.disabled = true);
-  if(isCorrect){ btnEl.classList.add('correct'); quizScore++; }
-  else{
-    btnEl.classList.add('wrong');
-    const correctMeaning = wordMeaning(VOCAB.find(v=>v.id===correctId));
-    buttons.forEach(b=>{
-      if(b.textContent === correctMeaning) b.classList.add('correct');
-    });
-  }
   recordActivityToday();
-  setTimeout(()=>{ quizIdx++; renderQuizQuestion(); }, 900);
+
+  if(isCorrect){
+    btnEl.classList.add('correct');
+    quizScore++;
+    setTimeout(()=>{ quizIdx++; renderQuizQuestion(); }, 900);
+  } else {
+    btnEl.classList.add('wrong');
+    // find and highlight whichever button shows the correct answer's text
+    const correctTexts = [correctWord.nl, wordMeaning(correctWord)];
+    const srMatch = SENTENCE_RECOGNITION.find(s=>s.word===correctWord.nl);
+    if(srMatch) correctTexts.push(srMatch.correct);
+    buttons.forEach(b=>{ if(correctTexts.includes(b.textContent)) b.classList.add('correct'); });
+    showWrongAnswerExplanation(correctWord, wrongText);
+  }
+}
+
+function showWrongAnswerExplanation(correctWord, wrongText){
+  // Automatic, instant "don't confuse" tip when the wrong pick happens to be
+  // the correct word's antonym — no AI call needed, the data is already there.
+  const wrongWordObj = VOCAB.find(v => v.nl === wrongText || wordMeaning(v) === wrongText);
+  let confusionHtml = '';
+  if(wrongWordObj && (wrongWordObj.antonym === correctWord.nl || correctWord.antonym === wrongWordObj.nl)){
+    confusionHtml = `
+      <div class="quiz-confuse-tip">
+        ⚠️ ${t('quizDontConfuse')}
+        <div><b>${correctWord.nl}</b> = ${wordMeaning(correctWord)}</div>
+        <div><b>${wrongWordObj.nl}</b> = ${wordMeaning(wrongWordObj)}</div>
+      </div>`;
+  }
+  const panel = document.createElement('div');
+  panel.className = 'quiz-explain-panel';
+  panel.innerHTML = `
+    <div class="quiz-explain-row wrong">❌ ${t('quizYourAnswer')}: <b>${escapeHtml(wrongText)}</b></div>
+    <div class="quiz-explain-row correct">✅ ${t('quizCorrectAnswer')}: <b>${escapeHtml(correctWord.nl)} — ${escapeHtml(wordMeaning(correctWord))}</b></div>
+    ${confusionHtml}
+    <button class="grammar-back-btn" id="quizExplainAiBtn">💡 ${t('quizExplainMore')}</button>
+    <div id="quizAiExplainResult"></div>
+    <button class="quiz-restart" id="quizContinueBtn" style="width:100%; margin-top:10px;">${t('quizContinueBtn')}</button>
+  `;
+  quizBody.appendChild(panel);
+  document.getElementById('quizContinueBtn').onclick = ()=>{ quizIdx++; renderQuizQuestion(); };
+  document.getElementById('quizExplainAiBtn').onclick = (e)=> fetchAiExplanation(e.currentTarget, correctWord, wrongText);
+}
+
+async function fetchAiExplanation(btn, correctWord, wrongText){
+  btn.disabled = true;
+  btn.textContent = '⏳ ' + t('essayGrading');
+  const resultEl = document.getElementById('quizAiExplainResult');
+  try{
+    const response = await fetch('/api/explain-answer', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        correctWord: correctWord.nl,
+        correctMeaning: wordMeaning(correctWord),
+        wrongAnswer: wrongText,
+        uiLanguage: currentLang
+      })
+    });
+    if(!response.ok) throw new Error('Request failed: ' + response.status);
+    const data = await response.json();
+    resultEl.innerHTML = `
+      <div class="essay-feedback-card mistake" style="margin-top:10px;">
+        <div class="essay-feedback-icon">💡</div>
+        <div>
+          <div class="essay-feedback-explain">${escapeHtml(data.explanation || '')}</div>
+          ${data.example ? `<div class="essay-feedback-fix" style="color:var(--cream);">${escapeHtml(data.example)}</div>` : ''}
+        </div>
+      </div>
+    `;
+    btn.style.display = 'none';
+  }catch(err){
+    console.error('Explain-answer error:', err);
+    resultEl.innerHTML = `<div class="ai-error">${t('essayError')}</div>`;
+    btn.disabled = false;
+    btn.textContent = '💡 ' + t('quizExplainMore');
+  }
 }
 
 function renderQuizResult(){
-  const pct = Math.round((quizScore/quizPool.length)*100);
+  const pct = Math.round((quizScore/quizQuestions.length)*100);
   quizBody.innerHTML = `
     <div class="quiz-result">
-      <div class="score">${quizScore}/${quizPool.length}</div>
+      <div class="score">${quizScore}/${quizQuestions.length}</div>
       <div class="score-label">${pct}% ${t('quizCorrect')}</div>
       <button class="quiz-restart" id="quizAgain">${t('quizAgain')}</button>
       <button class="quiz-restart secondary" id="quizBack">${t('quizBack')}</button>
@@ -6376,7 +6590,21 @@ function renderWriteResult(){
    which asks Claude to grade it and return structured feedback: three 0-100
    scores, a short list of concrete grammar mistakes, and basic-word-to-B2
    vocabulary upgrades. The Anthropic API key never touches the browser. */
-const ESSAY_PROMPTS = [
+const ESSAY_PROMPTS_B1 = [
+  "Beschrijf een typische dag in jouw leven.",
+  "Wat is jouw favoriete vakantie geweest en waarom?",
+  "Vertel over een goede vriend of vriendin.",
+  "Wat doe je graag in het weekend?",
+  "Beschrijf je droomhuis.",
+  "Wat vind je leuk aan Nederland?",
+  "Beschrijf je werk of studie.",
+  "Wat is jouw favoriete seizoen en waarom?",
+  "Vertel over een keer dat je iets nieuws hebt geleerd.",
+  "Wat is jouw favoriete Nederlandse gerecht en waarom?",
+  "Beschrijf je familie.",
+  "Wat zou je doen als je een dag vrij had?"
+];
+const ESSAY_PROMPTS_B2 = [
   "Moeten jongeren verplicht vrijwilligerswerk doen?",
   "Is het beter om in de stad of op het platteland te wonen?",
   "Zouden mensen minder vlees moeten eten voor het milieu?",
@@ -6394,17 +6622,21 @@ const ESSAY_PROMPTS = [
   "Moet iedereen verplicht stemmen bij verkiezingen?"
 ];
 let currentEssayPrompt = null;
+let essayLevel = 'B2'; // 'B1' | 'B2' — B1 uses shorter, more personal prompts and a lower word target
 
 function startEssayMode(){
   if(!isPremium){ showUpgradePrompt(); }
-  currentEssayPrompt = ESSAY_PROMPTS[Math.floor(Math.random()*ESSAY_PROMPTS.length)];
+  const prompts = essayLevel === 'B1' ? ESSAY_PROMPTS_B1 : ESSAY_PROMPTS_B2;
+  currentEssayPrompt = prompts[Math.floor(Math.random()*prompts.length)];
   renderEssayPromptUI();
 }
 
 function renderEssayPromptUI(){
+  const wordTarget = essayLevel === 'B1' ? [50,100] : [80,180];
   writeBody.innerHTML = `
+    <div class="levels" id="essayLevelToggle" style="margin-bottom:12px;"></div>
     <div class="quiz-card" style="margin-bottom:16px;">
-      <div class="quiz-cat">B2 · ${t('essayPromptLabel')}</div>
+      <div class="quiz-cat">${essayLevel} · ${t('essayPromptLabel')}</div>
       <div class="grammar-question" style="font-size:17px;">${currentEssayPrompt}</div>
     </div>
     <button class="grammar-back-btn" id="essayNewPromptBtn">🔄 ${t('essayNewPrompt')}</button>
@@ -6413,13 +6645,20 @@ function renderEssayPromptUI(){
     <button class="quiz-restart" id="essaySubmitBtn" style="width:100%; margin-top:10px;">${t('essaySubmit')}</button>
     <div id="essayFeedbackArea"></div>
   `;
+  const toggle = document.getElementById('essayLevelToggle');
+  toggle.innerHTML = `
+    <button class="level-btn${essayLevel==='B1'?' active':''}" data-lvl="B1">B1</button>
+    <button class="level-btn${essayLevel==='B2'?' active':''}" data-lvl="B2">B2</button>
+  `;
+  toggle.querySelectorAll('button').forEach(b=> b.onclick = ()=>{ essayLevel = b.dataset.lvl; startEssayMode(); });
+
   document.getElementById('essayNewPromptBtn').onclick = startEssayMode;
   const textarea = document.getElementById('essayInput');
   const wordCountEl = document.getElementById('essayWordCount');
   textarea.addEventListener('input', ()=>{
     const words = textarea.value.trim().split(/\s+/).filter(Boolean).length;
     wordCountEl.textContent = words + ' ' + t('essayWords');
-    wordCountEl.classList.toggle('good', words >= 80 && words <= 180);
+    wordCountEl.classList.toggle('good', words >= wordTarget[0] && words <= wordTarget[1]);
   });
   document.getElementById('essaySubmitBtn').onclick = submitEssayForFeedback;
 }
@@ -6442,7 +6681,7 @@ async function submitEssayForFeedback(){
     const response = await fetch('/api/writing-feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: currentEssayPrompt, text })
+      body: JSON.stringify({ prompt: currentEssayPrompt, text, level: essayLevel })
     });
     if(!response.ok) throw new Error('Request failed: ' + response.status);
     const feedback = await response.json();
