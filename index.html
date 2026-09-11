@@ -2074,101 +2074,114 @@ body.light-mode .reminder-text{ color:#4a3a28; }
     </div>
   </div>
 
-  <div class="exam-card" id="examCard">
-    <div class="exam-header">
-      <span class="exam-icon">🎓</span>
-      <span class="exam-title">NT2 Staatsexamen</span>
+  <div class="progress-screen" id="resourcesScreen">
+    <div class="grammar-topic-list" style="margin-bottom:18px;">
+      <button class="grammar-topic-card" id="goToGrammarBtn">
+        <span class="grammar-topic-title" data-i18n="resGrammarEntry">📖 Grammar practice</span>
+        <span class="grammar-topic-arrow">›</span>
+      </button>
+      <button class="grammar-topic-card" id="goToMatchBtn">
+        <span class="grammar-topic-title" data-i18n="resMatchEntry">🔀 Opposites &amp; Synonyms</span>
+        <span class="grammar-topic-arrow">›</span>
+      </button>
     </div>
-    <div id="examBody"></div>
-    <div class="exam-links">
-      <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-i" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleI">Rooster Programma I (B1)</a>
-      <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-ii" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleII">Rooster Programma II (B2)</a>
-    </div>
-  </div>
 
-  <div class="resources-footer">
-    <div class="resources-card news">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="15" height="15" rx="1.5" stroke="white" stroke-width="1.8"/><path d="M18 8h2.5a1 1 0 0 1 1 1v9.5a1.5 1.5 0 0 1-3 0V8Z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><line x1="6" y1="9" x2="14" y2="9" stroke="white" stroke-width="1.6" stroke-linecap="round"/><line x1="6" y1="12.5" x2="14" y2="12.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/><line x1="6" y1="16" x2="11" y2="16" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-        <span class="resources-title" data-i18n="resNews">News &amp; culture</span>
-        <span class="resources-chevron">▾</span>
+    <div class="exam-card" id="examCard">
+      <div class="exam-header">
+        <span class="exam-icon">🎓</span>
+        <span class="exam-title">NT2 Staatsexamen</span>
       </div>
-      <div class="resources-links" id="resourcesLinksNews"></div>
-    </div>
-    <div class="resources-card knm">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 L21 8 H3 Z" fill="white"/><rect x="5" y="9" width="2.2" height="9" fill="white"/><rect x="10.9" y="9" width="2.2" height="9" fill="white"/><rect x="16.8" y="9" width="2.2" height="9" fill="white"/><rect x="3.5" y="18.5" width="17" height="2" fill="white"/></svg></span>
-        <span class="resources-title" data-i18n="resKnm">KNM</span>
-        <span class="resources-chevron">▾</span>
+      <div id="examBody"></div>
+      <div class="exam-links">
+        <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-i" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleI">Rooster Programma I (B1)</a>
+        <a href="https://www.staatsexamensnt2.nl/aanmelden/examenrooster/examenrooster-programma-ii" target="_blank" rel="noopener noreferrer" data-i18n="examScheduleII">Rooster Programma II (B2)</a>
       </div>
-      <div class="resources-links" id="resourcesLinksKnm"></div>
     </div>
-    <div class="resources-card youtube">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="5.5" width="20" height="13" rx="4" fill="white"/><path d="M10.5 9.5 L15.5 12 L10.5 14.5 Z" fill="#e5533d"/></svg></span>
-        <span class="resources-title" data-i18n="resYoutube">YouTube</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksYoutube"></div>
-    </div>
-    <div class="resources-card listen">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13v-1a8 8 0 0 1 16 0v1" stroke="white" stroke-width="1.8" fill="none"/><rect x="3" y="12.5" width="4" height="6" rx="1.5" fill="white"/><rect x="17" y="12.5" width="4" height="6" rx="1.5" fill="white"/></svg></span>
-        <span class="resources-title" data-i18n="resListen">Luisteren</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksListen"></div>
-    </div>
-    <div class="resources-card tvkijken">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2.5" y="5" width="19" height="13" rx="1.8" stroke="white" stroke-width="1.8"/><line x1="8" y1="21" x2="16" y2="21" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.8"/></svg></span>
-        <span class="resources-title" data-i18n="resTvKijken">TV kijken</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksTvKijken"></div>
-    </div>
-    <div class="resources-card dict">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 6c-2-1.3-4.5-1.5-7-1v13c2.5-.5 5-.3 7 1V6Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 6c2-1.3 4.5-1.5 7-1v13c-2.5-.5-5-.3-7 1V6Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
-        <span class="resources-title" data-i18n="resDict">Dictionary</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksDict"></div>
-    </div>
-    <div class="resources-card practice">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h13a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H10l-4 3.5V15H4a1.5 1.5 0 0 1-1.5-1.5v-7A1.5 1.5 0 0 1 4 5Z" fill="white"/></svg></span>
-        <span class="resources-title" data-i18n="resPractice">Language practice</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksPractice"></div>
-    </div>
-    <div class="resources-card coach">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M2 12l4-4 3 3 1.5-1.5L14 13" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M13 9.5l3-3 6 6-2.5 2.5-1-1-3 3-3-3" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="17" cy="14" r="1.3" fill="white"/></svg></span>
-        <span class="resources-title" data-i18n="resCoach">Taalcoaches</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksCoach"></div>
-    </div>
-    <div class="resources-card werk">
-      <div class="resources-header">
-        <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="3.5" y="7" width="17" height="12" rx="1.8" stroke="white" stroke-width="1.9" fill="none"/><path d="M3.5 12.5h17" stroke="white" stroke-width="1.9"/></svg></span>
-        <span class="resources-title" data-i18n="resWerk">Werk en Vrijwilligers</span>
-        <span class="resources-chevron">▾</span>
-      </div>
-      <div class="resources-links" id="resourcesLinksWerk"></div>
-    </div>
-  </div>
 
-  <div class="feedback-bar">
-    <span class="feedback-text" data-i18n="feedbackPrompt">Found a problem, or something you'd like added?</span>
-    <a class="feedback-btn" id="feedbackLink" href="#" target="_blank" rel="noopener noreferrer" data-i18n="feedbackBtn">💬 Send feedback</a>
-  </div>
+    <div class="resources-footer">
+      <div class="resources-card news">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="15" height="15" rx="1.5" stroke="white" stroke-width="1.8"/><path d="M18 8h2.5a1 1 0 0 1 1 1v9.5a1.5 1.5 0 0 1-3 0V8Z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><line x1="6" y1="9" x2="14" y2="9" stroke="white" stroke-width="1.6" stroke-linecap="round"/><line x1="6" y1="12.5" x2="14" y2="12.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/><line x1="6" y1="16" x2="11" y2="16" stroke="white" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <span class="resources-title" data-i18n="resNews">News &amp; culture</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksNews"></div>
+      </div>
+      <div class="resources-card knm">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 L21 8 H3 Z" fill="white"/><rect x="5" y="9" width="2.2" height="9" fill="white"/><rect x="10.9" y="9" width="2.2" height="9" fill="white"/><rect x="16.8" y="9" width="2.2" height="9" fill="white"/><rect x="3.5" y="18.5" width="17" height="2" fill="white"/></svg></span>
+          <span class="resources-title" data-i18n="resKnm">KNM</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksKnm"></div>
+      </div>
+      <div class="resources-card youtube">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2" y="5.5" width="20" height="13" rx="4" fill="white"/><path d="M10.5 9.5 L15.5 12 L10.5 14.5 Z" fill="#e5533d"/></svg></span>
+          <span class="resources-title" data-i18n="resYoutube">YouTube</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksYoutube"></div>
+      </div>
+      <div class="resources-card listen">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 13v-1a8 8 0 0 1 16 0v1" stroke="white" stroke-width="1.8" fill="none"/><rect x="3" y="12.5" width="4" height="6" rx="1.5" fill="white"/><rect x="17" y="12.5" width="4" height="6" rx="1.5" fill="white"/></svg></span>
+          <span class="resources-title" data-i18n="resListen">Luisteren</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksListen"></div>
+      </div>
+      <div class="resources-card tvkijken">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="2.5" y="5" width="19" height="13" rx="1.8" stroke="white" stroke-width="1.8"/><line x1="8" y1="21" x2="16" y2="21" stroke="white" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="18" x2="12" y2="21" stroke="white" stroke-width="1.8"/></svg></span>
+          <span class="resources-title" data-i18n="resTvKijken">TV kijken</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksTvKijken"></div>
+      </div>
+      <div class="resources-card dict">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 6c-2-1.3-4.5-1.5-7-1v13c2.5-.5 5-.3 7 1V6Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 6c2-1.3 4.5-1.5 7-1v13c-2.5-.5-5-.3-7 1V6Z" stroke="white" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+          <span class="resources-title" data-i18n="resDict">Dictionary</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksDict"></div>
+      </div>
+      <div class="resources-card practice">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h13a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H10l-4 3.5V15H4a1.5 1.5 0 0 1-1.5-1.5v-7A1.5 1.5 0 0 1 4 5Z" fill="white"/></svg></span>
+          <span class="resources-title" data-i18n="resPractice">Language practice</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksPractice"></div>
+      </div>
+      <div class="resources-card coach">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M2 12l4-4 3 3 1.5-1.5L14 13" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M13 9.5l3-3 6 6-2.5 2.5-1-1-3 3-3-3" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="17" cy="14" r="1.3" fill="white"/></svg></span>
+          <span class="resources-title" data-i18n="resCoach">Taalcoaches</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksCoach"></div>
+      </div>
+      <div class="resources-card werk">
+        <div class="resources-header">
+          <span class="resources-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="3.5" y="7" width="17" height="12" rx="1.8" stroke="white" stroke-width="1.9" fill="none"/><path d="M3.5 12.5h17" stroke="white" stroke-width="1.9"/></svg></span>
+          <span class="resources-title" data-i18n="resWerk">Werk en Vrijwilligers</span>
+          <span class="resources-chevron">▾</span>
+        </div>
+        <div class="resources-links" id="resourcesLinksWerk"></div>
+      </div>
+    </div>
 
-  <div class="scene-label">
-    <span id="sceneCaption">A1–C2 · Netherlands</span>
-    <span id="sceneCredit">Illustration</span>
+    <div class="feedback-bar">
+      <span class="feedback-text" data-i18n="feedbackPrompt">Found a problem, or something you'd like added?</span>
+      <a class="feedback-btn" id="feedbackLink" href="#" target="_blank" rel="noopener noreferrer" data-i18n="feedbackBtn">💬 Send feedback</a>
+    </div>
+
+    <div class="scene-label">
+      <span id="sceneCaption">A1–C2 · Netherlands</span>
+      <span id="sceneCredit">Illustration</span>
+    </div>
   </div>
 
   <div class="bottom-nav-spacer"></div>
@@ -2179,10 +2192,9 @@ body.light-mode .reminder-text{ color:#4a3a28; }
   <button class="mode-tab active" id="tabCards" data-i18n-title="tabCards" role="tab" aria-selected="true"><span class="tab-icon">🗂️</span><span class="tab-label" data-i18n="tabCardsShort">Cards</span></button>
   <button class="mode-tab" id="tabQuiz" data-i18n-title="tabQuiz" role="tab" aria-selected="false"><span class="tab-icon">🧩</span><span class="tab-label" data-i18n="tabQuizShort">Quiz</span></button>
   <button class="mode-tab" id="tabWrite" data-i18n-title="tabWrite" role="tab" aria-selected="false"><span class="tab-icon">✍️</span><span class="tab-label" data-i18n="tabWriteShort">Write</span></button>
-  <button class="mode-tab" id="tabOpposites" data-i18n-title="tabOpposites" role="tab" aria-selected="false"><span class="tab-icon">🔀</span><span class="tab-label" data-i18n="tabOppositesShort">Match</span></button>
-  <button class="mode-tab" id="tabGrammar" data-i18n-title="tabGrammar" role="tab" aria-selected="false"><span class="tab-icon">📖</span><span class="tab-label" data-i18n="tabGrammarShort">Grammar</span></button>
   <button class="mode-tab" id="tabSearch" data-i18n-title="tabSearch" role="tab" aria-selected="false"><span class="tab-icon">🔍</span><span class="tab-label" data-i18n="tabSearchShort">Search</span></button>
   <button class="mode-tab" id="tabProgress" data-i18n-title="tabProgress" role="tab" aria-selected="false"><span class="tab-icon">📊</span><span class="tab-label" data-i18n="tabProgressShort">Progress</span></button>
+  <button class="mode-tab" id="tabResources" data-i18n-title="tabResources" role="tab" aria-selected="false"><span class="tab-icon">📚</span><span class="tab-label" data-i18n="tabResourcesShort">Resources</span></button>
 </div>
 
 <script>
@@ -4527,6 +4539,10 @@ const STRINGS = {
   tabOppositesShort: { en:"Match", nl:"Match", tr:"Eşleştir", ar:"طابق" },
   tabGrammar:    { en:"📖 Grammar", nl:"📖 Grammatica", tr:"📖 Dilbilgisi", ar:"📖 القواعد" },
   tabGrammarShort: { en:"Grammar", nl:"Grammatica", tr:"Dilbilgisi", ar:"القواعد" },
+  tabResources:  { en:"📚 Resources", nl:"📚 Bronnen", tr:"📚 Kaynaklar", ar:"📚 مصادر" },
+  tabResourcesShort: { en:"Resources", nl:"Bronnen", tr:"Kaynaklar", ar:"مصادر" },
+  resGrammarEntry: { en:"📖 Grammar practice", nl:"📖 Grammaticaoefeningen", tr:"📖 Gramer alıştırmaları", ar:"📖 تدريبات القواعد" },
+  resMatchEntry: { en:"🔀 Opposites & Synonyms", nl:"🔀 Tegenstellingen & Synoniemen", tr:"🔀 Zıt ve Eş Anlamlar", ar:"🔀 الأضداد والمرادفات" },
   grammarIntro:  { en:"Pick a topic, read the explanation, then test yourself.", nl:"Kies een onderwerp, lees de uitleg en test jezelf.", tr:"Bir konu seç, açıklamayı oku, sonra kendini test et.", ar:"اختر موضوعاً، اقرأ الشرح، ثم اختبر نفسك." },
   grammarAllTopics: { en:"All topics", nl:"Alle onderwerpen", tr:"Tüm konular", ar:"جميع المواضيع" },
   grammarStartQuiz: { en:"Start quiz", nl:"Start de test", tr:"Testi başlat", ar:"ابدأ الاختبار" },
@@ -5350,10 +5366,9 @@ document.addEventListener('keydown', (e)=>{
 const tabCards = document.getElementById('tabCards');
 const tabQuiz = document.getElementById('tabQuiz');
 const tabWrite = document.getElementById('tabWrite');
-const tabOpposites = document.getElementById('tabOpposites');
-const tabGrammar = document.getElementById('tabGrammar');
 const tabSearch = document.getElementById('tabSearch');
 const tabProgress = document.getElementById('tabProgress');
+const tabResources = document.getElementById('tabResources');
 const cardsScreen = document.getElementById('cardsScreen');
 const quizScreen = document.getElementById('quizScreen');
 const writeScreen = document.getElementById('writeScreen');
@@ -5361,15 +5376,15 @@ const oppositesScreen = document.getElementById('oppositesScreen');
 const grammarScreen = document.getElementById('grammarScreen');
 const searchScreen = document.getElementById('searchScreen');
 const progressScreen = document.getElementById('progressScreen');
+const resourcesScreen = document.getElementById('resourcesScreen');
 
 function deactivateAllTabs(){
   tabCards.classList.remove('active');
   tabQuiz.classList.remove('active');
   tabWrite.classList.remove('active');
-  tabOpposites.classList.remove('active');
-  tabGrammar.classList.remove('active');
   tabSearch.classList.remove('active');
   tabProgress.classList.remove('active');
+  tabResources.classList.remove('active');
   cardsScreen.classList.add('hidden');
   quizScreen.classList.remove('active');
   writeScreen.classList.remove('active');
@@ -5377,6 +5392,7 @@ function deactivateAllTabs(){
   grammarScreen.classList.remove('active');
   searchScreen.classList.remove('active');
   progressScreen.classList.remove('active');
+  resourcesScreen.classList.remove('active');
 }
 
 tabCards.onclick = ()=>{
@@ -5399,21 +5415,6 @@ tabWrite.onclick = ()=>{
   startWrite(writeDifficulty);
   updateBackgroundTheme();
 };
-tabOpposites.onclick = ()=>{
-  deactivateAllTabs();
-  tabOpposites.classList.add('active');
-  oppositesScreen.classList.add('active');
-  renderMatchModeToggle();
-  startOpposites();
-  updateBackgroundTheme();
-};
-tabGrammar.onclick = ()=>{
-  deactivateAllTabs();
-  tabGrammar.classList.add('active');
-  grammarScreen.classList.add('active');
-  renderGrammarTopicList();
-  updateBackgroundTheme();
-};
 tabSearch.onclick = ()=>{
   deactivateAllTabs();
   tabSearch.classList.add('active');
@@ -5426,6 +5427,29 @@ tabProgress.onclick = ()=>{
   progressScreen.classList.add('active');
   renderProgress();
   renderTodayUsage();
+};
+tabResources.onclick = ()=>{
+  deactivateAllTabs();
+  tabResources.classList.add('active');
+  resourcesScreen.classList.add('active');
+};
+// Grammar and Opposites/Synonyms live under the Resources tab, entered via
+// their own cards rather than a dedicated bottom-nav slot. The Resources tab
+// stays visually active while inside either, so navigation still feels coherent.
+document.getElementById('goToGrammarBtn').onclick = ()=>{
+  deactivateAllTabs();
+  tabResources.classList.add('active');
+  grammarScreen.classList.add('active');
+  renderGrammarTopicList();
+  updateBackgroundTheme();
+};
+document.getElementById('goToMatchBtn').onclick = ()=>{
+  deactivateAllTabs();
+  tabResources.classList.add('active');
+  oppositesScreen.classList.add('active');
+  renderMatchModeToggle();
+  startOpposites();
+  updateBackgroundTheme();
 };
 
 /* ---------- quiz mode ---------- */
