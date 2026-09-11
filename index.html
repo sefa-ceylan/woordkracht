@@ -1361,7 +1361,7 @@ body.light-mode .bg-photo-full{ display:block; }
 }
 body.light-mode .bg-scrim-full{
   display:block;
-  background: linear-gradient(180deg, rgba(255,250,240,0.65) 0%, rgba(255,250,240,0.7) 40%, rgba(255,250,240,0.88) 100%);
+  background: linear-gradient(180deg, rgba(255,250,240,0.15) 0%, rgba(255,250,240,0.22) 40%, rgba(255,250,240,0.4) 100%);
 }
 /* feedback bar */
 .feedback-bar{
@@ -2084,11 +2084,13 @@ body.light-mode .reminder-text{ color:#4a3a28; }
   </div>
 
   <div class="quiz-screen" id="oppositesScreen">
+    <div class="levels" id="practiceSwitchToggleM"></div>
     <div class="levels" id="matchModeToggle"></div>
     <div id="oppositesBody"></div>
   </div>
 
   <div class="quiz-screen" id="grammarScreen">
+    <div class="levels" id="practiceSwitchToggleG"></div>
     <div id="grammarBody"></div>
   </div>
 
@@ -2133,17 +2135,6 @@ body.light-mode .reminder-text{ color:#4a3a28; }
   </div>
 
   <div class="progress-screen" id="resourcesScreen">
-    <div class="grammar-topic-list" style="margin-bottom:18px;">
-      <button class="grammar-topic-card" id="goToGrammarBtn">
-        <span class="grammar-topic-title" data-i18n="resGrammarEntry">📖 Grammar practice</span>
-        <span class="grammar-topic-arrow">›</span>
-      </button>
-      <button class="grammar-topic-card" id="goToMatchBtn">
-        <span class="grammar-topic-title" data-i18n="resMatchEntry">🔀 Opposites &amp; Synonyms</span>
-        <span class="grammar-topic-arrow">›</span>
-      </button>
-    </div>
-
     <div class="exam-card" id="examCard">
       <div class="exam-header">
         <span class="exam-icon">🎓</span>
@@ -2250,6 +2241,7 @@ body.light-mode .reminder-text{ color:#4a3a28; }
   <button class="mode-tab active" id="tabCards" data-i18n-title="tabCards" role="tab" aria-selected="true"><span class="tab-icon">🗂️</span><span class="tab-label" data-i18n="tabCardsShort">Cards</span></button>
   <button class="mode-tab" id="tabQuiz" data-i18n-title="tabQuiz" role="tab" aria-selected="false"><span class="tab-icon">🧩</span><span class="tab-label" data-i18n="tabQuizShort">Quiz</span></button>
   <button class="mode-tab" id="tabWrite" data-i18n-title="tabWrite" role="tab" aria-selected="false"><span class="tab-icon">✍️</span><span class="tab-label" data-i18n="tabWriteShort">Write</span></button>
+  <button class="mode-tab" id="tabGrammar" data-i18n-title="tabGrammar" role="tab" aria-selected="false"><span class="tab-icon">📖</span><span class="tab-label" data-i18n="tabGrammarShort">Grammar</span></button>
   <button class="mode-tab" id="tabSearch" data-i18n-title="tabSearch" role="tab" aria-selected="false"><span class="tab-icon">🔍</span><span class="tab-label" data-i18n="tabSearchShort">Search</span></button>
   <button class="mode-tab" id="tabProgress" data-i18n-title="tabProgress" role="tab" aria-selected="false"><span class="tab-icon">📊</span><span class="tab-label" data-i18n="tabProgressShort">Progress</span></button>
   <button class="mode-tab" id="tabResources" data-i18n-title="tabResources" role="tab" aria-selected="false"><span class="tab-icon">📚</span><span class="tab-label" data-i18n="tabResourcesShort">Resources</span></button>
@@ -4761,8 +4753,13 @@ function setLanguage(lang){
     renderWriteModeToggle();
     if(writeMode === 'essay') renderEssayPromptUI(); else startWrite(writeDifficulty);
   }
-  if(oppositesScreen.classList.contains('active')){ renderMatchModeToggle(); startOpposites(); }
+  if(oppositesScreen.classList.contains('active')){
+    wirePracticeSwitch(document.getElementById('practiceSwitchToggleM'), 'match');
+    renderMatchModeToggle();
+    startOpposites();
+  }
   if(grammarScreen.classList.contains('active')){
+    wirePracticeSwitch(document.getElementById('practiceSwitchToggleG'), 'grammar');
     if(document.getElementById('grammarOptions')){
       // mid-quiz (single-topic or mixed): just redraw the current question in the new language
       renderGrammarQuestion();
@@ -5211,10 +5208,10 @@ function updateBackgroundTheme(){
    a few hundred bytes each, unlike the stock photos this replaced which were
    blurry at full-page size and much heavier to load. */
 const GALLERY_PATTERNS = [
-  { name:"Delft tegels", tile:56, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1NicgaGVpZ2h0PSc1Nicgdmlld0JveD0nMCAwIDU2IDU2Jz48ZyBmaWxsPSdub25lJyBzdHJva2U9JyNjODk2MmEnIHN0cm9rZS13aWR0aD0nMScgb3BhY2l0eT0nMC41NSc+PHBhdGggZD0nTTAgMjhMMjggMEw1NiAyOEwyOCA1NlonLz48Y2lyY2xlIGN4PScyOCcgY3k9JzI4JyByPSczJyBmaWxsPScjNGE4NDk0JyBzdHJva2U9J25vbmUnIG9wYWNpdHk9JzAuNCcvPjwvZz48L3N2Zz4=" },
-  { name:"Gracht golven", tile:72, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3MicgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDcyIDI0Jz48cGF0aCBkPSdNMCAxMiBRMTggMCAzNiAxMiBUNzIgMTInIGZpbGw9J25vbmUnIHN0cm9rZT0nIzRhODQ5NCcgc3Ryb2tlLXdpZHRoPScxLjQnIG9wYWNpdHk9JzAuNScvPjwvc3ZnPg==" },
-  { name:"Tulpen stippen", tile:32, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMicgdmlld0JveD0nMCAwIDMyIDMyJz48Y2lyY2xlIGN4PScxNicgY3k9JzE2JyByPScyLjInIGZpbGw9JyNlODYyMmMnIG9wYWNpdHk9JzAuNCcvPjwvc3ZnPg==" },
-  { name:"Molenwieken", tile:48, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0OCcgaGVpZ2h0PSc0OCcgdmlld0JveD0nMCAwIDQ4IDQ4Jz48ZyBzdHJva2U9JyNjODk2MmEnIHN0cm9rZS13aWR0aD0nMS4zJyBvcGFjaXR5PScwLjQ1Jz48cGF0aCBkPSdNMjQgOCBMMjQgMjQgTTI0IDI0IEwzNiAzMiBNMjQgMjQgTDEyIDMyJy8+PGNpcmNsZSBjeD0nMjQnIGN5PScyNCcgcj0nMicgZmlsbD0nI2U4NjIyYycgc3Ryb2tlPSdub25lJyBvcGFjaXR5PScwLjU1Jy8+PC9nPjwvc3ZnPg==" },
+  { name:"Delft tegels", tile:56, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1NicgaGVpZ2h0PSc1Nicgdmlld0JveD0nMCAwIDU2IDU2Jz48ZyBmaWxsPSdub25lJyBzdHJva2U9JyNjODk2MmEnIHN0cm9rZS13aWR0aD0nMS4zJyBvcGFjaXR5PScwLjknPjxwYXRoIGQ9J00wIDI4TDI4IDBMNTYgMjhMMjggNTZaJy8+PGNpcmNsZSBjeD0nMjgnIGN5PScyOCcgcj0nMycgZmlsbD0nIzRhODQ5NCcgc3Ryb2tlPSdub25lJyBvcGFjaXR5PScwLjc1Jy8+PC9nPjwvc3ZnPg==" },
+  { name:"Gracht golven", tile:72, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc3MicgaGVpZ2h0PScyNCcgdmlld0JveD0nMCAwIDcyIDI0Jz48cGF0aCBkPSdNMCAxMiBRMTggMCAzNiAxMiBUNzIgMTInIGZpbGw9J25vbmUnIHN0cm9rZT0nIzRhODQ5NCcgc3Ryb2tlLXdpZHRoPScxLjYnIG9wYWNpdHk9JzAuODUnLz48L3N2Zz4=" },
+  { name:"Tulpen stippen", tile:32, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMicgdmlld0JveD0nMCAwIDMyIDMyJz48Y2lyY2xlIGN4PScxNicgY3k9JzE2JyByPScyLjQnIGZpbGw9JyNlODYyMmMnIG9wYWNpdHk9JzAuNycvPjwvc3ZnPg==" },
+  { name:"Molenwieken", tile:48, data:"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0OCcgaGVpZ2h0PSc0OCcgdmlld0JveD0nMCAwIDQ4IDQ4Jz48ZyBzdHJva2U9JyNjODk2MmEnIHN0cm9rZS13aWR0aD0nMS41JyBvcGFjaXR5PScwLjgnPjxwYXRoIGQ9J00yNCA4IEwyNCAyNCBNMjQgMjQgTDM2IDMyIE0yNCAyNCBMMTIgMzInLz48Y2lyY2xlIGN4PScyNCcgY3k9JzI0JyByPScyJyBmaWxsPScjZTg2MjJjJyBzdHJva2U9J25vbmUnIG9wYWNpdHk9JzAuODUnLz48L2c+PC9zdmc+" },
 ];
 let galleryIndex = 0;
 let galleryLayer = 'A'; // which full-page layer is currently the visible/active one
@@ -5437,6 +5434,7 @@ document.addEventListener('keydown', (e)=>{
 const tabCards = document.getElementById('tabCards');
 const tabQuiz = document.getElementById('tabQuiz');
 const tabWrite = document.getElementById('tabWrite');
+const tabGrammar = document.getElementById('tabGrammar');
 const tabSearch = document.getElementById('tabSearch');
 const tabProgress = document.getElementById('tabProgress');
 const tabResources = document.getElementById('tabResources');
@@ -5453,6 +5451,7 @@ function deactivateAllTabs(){
   tabCards.classList.remove('active');
   tabQuiz.classList.remove('active');
   tabWrite.classList.remove('active');
+  tabGrammar.classList.remove('active');
   tabSearch.classList.remove('active');
   tabProgress.classList.remove('active');
   tabResources.classList.remove('active');
@@ -5506,23 +5505,43 @@ tabResources.onclick = ()=>{
   tabResources.classList.add('active');
   resourcesScreen.classList.add('active');
 };
-// Grammar and Opposites/Synonyms live under the Resources tab, entered via
-// their own cards rather than a dedicated bottom-nav slot. The Resources tab
-// stays visually active while inside either, so navigation still feels coherent.
-document.getElementById('goToGrammarBtn').onclick = ()=>{
+
+/* Grammar and Opposites/Synonyms share one bottom-nav tab. A small switch row
+   at the top of each screen lets the person hop between the two without
+   leaving the tab — the Grammar tab itself stays highlighted either way. */
+let practiceSubMode = 'grammar'; // 'grammar' | 'match'
+
+function wirePracticeSwitch(containerEl, current){
+  containerEl.innerHTML = `
+    <button class="level-btn${current==='grammar'?' active':''}" data-mode="grammar">${t('tabGrammarShort')}</button>
+    <button class="level-btn${current==='match'?' active':''}" data-mode="match">${t('tabOppositesShort')}</button>
+  `;
+  containerEl.querySelectorAll('button').forEach(b=>{
+    b.onclick = ()=> b.dataset.mode === 'grammar' ? showGrammarSubScreen() : showMatchSubScreen();
+  });
+}
+
+function showGrammarSubScreen(){
+  practiceSubMode = 'grammar';
   deactivateAllTabs();
-  tabResources.classList.add('active');
+  tabGrammar.classList.add('active');
   grammarScreen.classList.add('active');
+  wirePracticeSwitch(document.getElementById('practiceSwitchToggleG'), 'grammar');
   renderGrammarTopicList();
   updateBackgroundTheme();
-};
-document.getElementById('goToMatchBtn').onclick = ()=>{
+}
+function showMatchSubScreen(){
+  practiceSubMode = 'match';
   deactivateAllTabs();
-  tabResources.classList.add('active');
+  tabGrammar.classList.add('active');
   oppositesScreen.classList.add('active');
+  wirePracticeSwitch(document.getElementById('practiceSwitchToggleM'), 'match');
   renderMatchModeToggle();
   startOpposites();
   updateBackgroundTheme();
+}
+tabGrammar.onclick = ()=>{
+  if(practiceSubMode === 'match') showMatchSubScreen(); else showGrammarSubScreen();
 };
 
 /* ---------- quiz mode ---------- */
